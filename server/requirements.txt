@@ -27,4 +27,3 @@ psycopg2-binary>=2.9
 # 可选：图片 OCR（体积大，按需安装）
 # paddleocr>=2.7
 # paddlepaddle>=2.5
-（内容由AI生成，仅供参考）
