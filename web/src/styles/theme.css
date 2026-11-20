@@ -1,0 +1,1289 @@
+/**
+ * 知寻 KnowSeek 全局设计令牌（高级企业风）
+ * 主色科技蓝 + 靛蓝渐变 + 大圆角/分层阴影/细腻背景
+ */
+
+:root {
+  /* 主色科技蓝（品牌锚点） */
+  --ks-primary: #2563eb;
+  --ks-primary-hover: #3b82f6;
+  --ks-primary-active: #1d4ed8;
+  --ks-primary-light: #eff6ff;
+  --ks-primary-gradient: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  --ks-primary-soft: rgba(37, 99, 235, 0.08);
+
+  /* 深色导航（毛玻璃）——保留供登录页等引用 */
+  --ks-dark-bg: rgba(15, 23, 42, 0.92);
+  --ks-dark-text: #f8fafc;
+
+  /* 浅色顶栏/侧栏（高级磨砂） */
+  --ks-topbar-bg: linear-gradient(120deg, rgba(6, 13, 31, 0.72) 0%, rgba(11, 23, 48, 0.66) 45%, rgba(16, 37, 77, 0.72) 78%, rgba(30, 58, 138, 0.78) 130%);
+  --ks-topbar-border: rgba(148, 163, 184, 0.2);
+  --ks-topbar-text: #f8fafc;
+  --ks-topbar-sub: #93c5fd;
+  --ks-topbar-shadow: 0 10px 32px rgba(2, 8, 23, 0.32), 0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  --ks-sidebar-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(245, 249, 255, 0.84) 100%);
+
+  /* 页面背景与卡片 */
+  --ks-page-bg: #eef2f8;
+  --ks-page-bg-deep: #e6ebf4;
+  --ks-card-bg: #ffffff;
+  --ks-card-radius: 14px;
+  --ks-card-radius-lg: 18px;
+  --ks-card-border: rgba(15, 23, 42, 0.06);
+  --ks-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --ks-shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --ks-shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10), 0 4px 12px rgba(15, 23, 42, 0.06);
+  --ks-shadow-primary: 0 6px 20px rgba(37, 99, 235, 0.22);
+
+  /* 文字层级 */
+  --ks-text-title: #0b1526;
+  --ks-text-body: #2f3d52;
+  --ks-text-secondary: #64748b;
+
+  /* 功能色（精调） */
+  --ks-success: #10b981;
+  --ks-success-bg: #ecfdf5;
+  --ks-warning: #f59e0b;
+  --ks-warning-bg: #fffbeb;
+  --ks-danger: #ef4444;
+  --ks-danger-bg: #fef2f2;
+
+  /* Element Plus 主色覆盖（全量变量系列） */
+  --el-color-primary: #2563eb;
+  --el-color-primary-light-3: #4f8bf0;
+  --el-color-primary-light-5: #7aabf5;
+  --el-color-primary-light-7: #a5c8f8;
+  --el-color-primary-light-8: #bcd6fa;
+  --el-color-primary-light-9: #d8e7fc;
+  --el-color-primary-dark-2: #1d4ed8;
+
+  /* Element Plus 功能色 */
+  --el-color-success: #10b981;
+  --el-color-success-light-3: #4ade80;
+  --el-color-success-light-5: #6ee7b7;
+  --el-color-success-light-7: #a7f3d0;
+  --el-color-success-light-8: #c6f6e2;
+  --el-color-success-light-9: #ecfdf5;
+  --el-color-success-dark-2: #059669;
+  --el-color-warning: #f59e0b;
+  --el-color-warning-light-3: #fbbf24;
+  --el-color-warning-light-5: #fcd34d;
+  --el-color-warning-light-7: #fde68a;
+  --el-color-warning-light-8: #fef3c7;
+  --el-color-warning-light-9: #fffbeb;
+  --el-color-warning-dark-2: #d97706;
+  --el-color-danger: #ef4444;
+  --el-color-danger-light-3: #f87171;
+  --el-color-danger-light-5: #fca5a5;
+  --el-color-danger-light-7: #fecaca;
+  --el-color-danger-light-8: #fee2e2;
+  --el-color-danger-light-9: #fef2f2;
+  --el-color-danger-dark-2: #dc2626;
+  --el-color-error: #ef4444;
+  --el-color-error-light-3: #f87171;
+  --el-color-error-light-5: #fca5a5;
+  --el-color-error-light-7: #fecaca;
+  --el-color-error-light-8: #fee2e2;
+  --el-color-error-light-9: #fef2f2;
+  --el-color-error-dark-2: #dc2626;
+
+  /* Element Plus 形状 */
+  --el-border-radius-base: 8px;
+  --el-border-radius-small: 6px;
+  --el-border-radius-round: 24px;
+  --el-border-color: #e2e8f0;
+  --el-border-color-light: #e8edf4;
+  --el-border-color-lighter: #eef2f7;
+  --el-fill-color-blank: #ffffff;
+  --el-fill-color-light: #f8fafc;
+  --el-text-color-primary: #0b1526;
+  --el-text-color-regular: #2f3d52;
+  --el-text-color-secondary: #64748b;
+  --el-font-size-base: 14px;
+  --el-box-shadow-light: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 横向溢出兜底：临界视口宽度下页面出现 25~30px 横向滚动条，统一裁掉装饰层溢出 */
+html,
+body {
+  overflow-x: hidden;
+}
+
+#app {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* 滚动条常驻：不同页面滚动条出现/消失会引起水平跳动，统一保留以稳定布局 */
+html {
+  overflow-y: scroll;
+}
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
+  background:
+    radial-gradient(1100px 520px at 88% -8%, rgba(37, 99, 235, 0.1), transparent 62%),
+    radial-gradient(900px 480px at -8% 108%, rgba(139, 92, 246, 0.08), transparent 60%),
+    radial-gradient(760px 420px at 50% 118%, rgba(14, 165, 233, 0.06), transparent 62%),
+    linear-gradient(180deg, var(--ks-page-bg) 0%, var(--ks-page-bg-deep) 100%);
+  background-attachment: fixed;
+  color: var(--ks-text-body);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- 通用布局 ---------- */
+.ks-page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 28px 32px;
+}
+
+.ks-card {
+  background: var(--ks-card-bg);
+  border: 1px solid var(--ks-card-border);
+  border-radius: var(--ks-card-radius);
+  box-shadow: var(--ks-shadow-sm);
+  padding: 20px;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.ks-page-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--ks-text-title);
+  margin: 0 0 16px;
+}
+
+.ks-muted {
+  color: var(--ks-text-secondary);
+  font-size: 12px;
+}
+
+/* ---------- 顶部导航（毛玻璃） ---------- */
+.ks-topbar {
+  height: 60px;
+  background: var(--ks-topbar-bg);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  color: var(--ks-topbar-text);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--ks-topbar-border);
+  box-shadow: var(--ks-topbar-shadow);
+}
+
+.ks-topbar .ks-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 40px;
+  text-decoration: none;
+  color: var(--ks-topbar-text);
+}
+
+.ks-topbar .ks-logo-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--ks-primary-gradient);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+}
+
+.ks-topbar .ks-logo-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.ks-topbar .ks-logo-sub {
+  font-size: 12px;
+  color: var(--ks-topbar-sub);
+  margin-left: 8px;
+  font-weight: 400;
+}
+
+.ks-topbar .ks-nav {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+
+.ks-topbar .ks-nav a {
+  color: rgba(226, 232, 240, 0.82);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.ks-topbar .ks-nav a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.ks-topbar .ks-nav a.router-link-active {
+  color: #fff;
+  background: var(--ks-primary-gradient);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.ks-topbar .ks-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ks-topbar-text);
+}
+
+.ks-topbar .ks-user .el-dropdown {
+  color: var(--ks-topbar-text);
+  cursor: pointer;
+}
+
+/* ---------- 深色侧栏（管理后台） ---------- */
+.ks-admin-layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+.ks-admin-sidebar {
+  width: 220px;
+  background: var(--ks-sidebar-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #16233a;
+  border-right: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 16px 12px;
+  flex-shrink: 0;
+}
+
+.ks-admin-sidebar .el-menu {
+  border-right: none;
+  background: transparent;
+  --el-menu-text-color: #475569;
+  --el-menu-hover-bg-color: rgba(37, 99, 235, 0.08);
+  --el-menu-active-color: #fff;
+  --el-menu-item-height: 46px;
+}
+
+.ks-admin-sidebar .el-menu-item {
+  border-radius: 10px;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.ks-admin-sidebar .el-menu-item:hover {
+  color: var(--ks-primary-active);
+}
+
+.ks-admin-sidebar .el-menu-item.is-active {
+  background: var(--ks-primary-gradient);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.ks-admin-main {
+  flex: 1;
+  padding: 24px 28px;
+  min-width: 0;
+}
+
+/* ---------- 表单/按钮统一样式 ---------- */
+.el-button--primary {
+  --el-button-bg-color: var(--ks-primary);
+  --el-button-border-color: var(--ks-primary);
+  --el-button-hover-bg-color: var(--ks-primary-hover);
+  --el-button-hover-border-color: var(--ks-primary-hover);
+  --el-button-active-bg-color: var(--ks-primary-active);
+  --el-button-active-border-color: var(--ks-primary-active);
+}
+
+.el-button {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.el-button--primary:not(.is-plain):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
+}
+
+.el-button--primary:not(.is-plain) {
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.22);
+}
+
+.el-input__wrapper,
+.el-select__wrapper,
+.el-textarea__inner {
+  border-radius: 8px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused,
+.el-textarea__inner:focus {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12), 0 0 0 1px var(--el-color-primary) inset;
+}
+
+.el-dialog {
+  border-radius: var(--ks-card-radius-lg);
+  box-shadow: var(--ks-shadow-lg);
+}
+
+.el-dialog__header {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+  margin-right: 0;
+}
+
+.el-message-box {
+  border-radius: var(--ks-card-radius-lg);
+}
+
+.el-tag {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.el-table {
+  --el-table-border-color: var(--el-border-color-lighter);
+  --el-table-header-bg-color: #f8fafc;
+  --el-table-header-text-color: var(--ks-text-secondary);
+  border-radius: 10px;
+}
+
+.el-table th.el-table__cell {
+  font-weight: 600;
+}
+
+.el-pagination.is-background .el-pager li.is-active {
+  background-color: var(--ks-primary);
+}
+
+/* ---------- 空态/加载态 ---------- */
+.ks-empty {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--ks-text-secondary);
+}
+
+.ks-loading {
+  padding: 40px 0;
+  text-align: center;
+  color: var(--ks-text-secondary);
+}
+
+/* ---------- 通用滚动条 ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------- 通用淡入 ---------- */
+@keyframes ks-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= 高端化进阶（二轮） ================= */
+
+/* 页面背景：柔和光晕 + 细腻网格，营造纵深高级感 */
+body {
+  background:
+    radial-gradient(1100px 520px at 12% -8%, rgba(37, 99, 235, 0.10), transparent 62%),
+    radial-gradient(900px 480px at 92% 0%, rgba(29, 78, 216, 0.08), transparent 58%),
+    linear-gradient(180deg, var(--ks-page-bg) 0%, var(--ks-page-bg-deep) 100%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 20%, transparent 78%);
+}
+
+/* 顶栏 logo 细节：悬停光感 + 副标语气泡 */
+.ks-topbar .ks-logo {
+  position: relative;
+  transition: opacity 0.2s ease;
+}
+
+.ks-topbar .ks-logo:hover {
+  opacity: 0.92;
+}
+
+.ks-topbar .ks-logo-badge {
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 60%, #16233a 160%);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  letter-spacing: 0;
+}
+
+.ks-topbar .ks-logo-sub {
+  background: rgba(147, 197, 253, 0.14);
+  border: 1px solid rgba(147, 197, 253, 0.28);
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: #dbeafe;
+}
+
+/* 卡片统一玻璃质感与细腻内边框 */
+.ks-card {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.ks-card:hover {
+  box-shadow: var(--ks-shadow-md);
+  border-color: rgba(37, 99, 235, 0.14);
+}
+
+/* 弹窗精细优化 */
+.el-dialog {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+  /* 高度自适应：整体不出现外滚动，头部/底部固定，内容区独立滚动，矮视口下按钮不会被挤出可视区 */
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 96px);
+  margin-top: 8vh;
+  overflow: hidden;
+}
+
+/* 头部与底部固定不滚动 */
+.el-dialog__header,
+.el-dialog__footer {
+  flex: 0 0 auto;
+}
+
+/* 内容区独立滚动：min-height:0 解除 flex 子项默认最小高度约束，保证 overflow 真正生效 */
+.el-dialog__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.el-dialog__header {
+  padding: 18px 22px 14px;
+}
+
+.el-dialog__title {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.2px;
+}
+
+.el-dialog__body {
+  padding: 18px 22px;
+}
+
+.el-dialog__footer {
+  padding: 12px 22px 18px;
+  border-top: 1px solid var(--el-border-color-lighter);
+}
+
+.el-dialog__footer .el-button + .el-button {
+  margin-left: 10px;
+}
+
+/* 选中项统一细腻反馈 */
+.el-radio__label {
+  font-weight: 500;
+}
+
+/* 浅色顶栏导航激活态光晕 */
+.ks-topbar .ks-nav a.router-link-active {
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* 全局聚焦动效 */
+.el-button:focus-visible,
+.el-input__wrapper:focus-within,
+.el-select__wrapper:focus-within {
+  outline: none;
+}
+
+/* ================= 三轮视觉升级：动态视觉体系 ================= */
+
+/* ---------- 1. 全局背景：蓝紫科技流光（缓慢流动） ---------- */
+body {
+  background:
+    radial-gradient(1100px 520px at 12% -8%, rgba(37, 99, 235, 0.16), transparent 62%),
+    radial-gradient(900px 480px at 92% 0%, rgba(139, 92, 246, 0.12), transparent 58%),
+    radial-gradient(760px 420px at 55% 110%, rgba(14, 165, 233, 0.1), transparent 60%),
+    linear-gradient(135deg, #eef2f8 0%, #e9eefc 40%, #eef4ff 70%, #e9edf7 100%);
+  background-attachment: fixed;
+  animation: ks-bg-shift 26s ease-in-out infinite alternate;
+}
+
+@keyframes ks-bg-shift {
+  0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0 0; }
+  50% { background-position: 14% 5%, -7% 9%, 6% -8%, 0 0; }
+  100% { background-position: -9% 7%, 11% -5%, -5% 12%, 0 0; }
+}
+
+/* ---------- 2. 玻璃拟态卡片：悬浮抬升 + 光晕 ---------- */
+.ks-card {
+  position: relative;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.88), rgba(248, 251, 255, 0.74));
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 4px 20px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.ks-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(37, 99, 235, 0.2);
+  box-shadow:
+    0 18px 42px rgba(15, 23, 42, 0.1),
+    0 6px 18px rgba(37, 99, 235, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+/* ---------- 3. 页面容器淡入上浮 ---------- */
+@keyframes ks-page-enter {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ks-page,
+.chat-layout,
+.ks-admin-layout,
+.ks-admin-main > section {
+  animation: ks-page-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- 4. 主按钮：渐变流光扫过 + 悬浮抬升 ---------- */
+.el-button--primary:not(.is-plain):not(.is-text):not(.is-link) {
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(135deg, #2563eb 0%, #3b82f6 55%, #2563eb 100%);
+  background-size: 200% 100%;
+  border: none;
+  transition: background-position 0.4s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.el-button--primary:not(.is-plain):not(.is-text):not(.is-link):hover {
+  background-position: 100% 0;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(37, 99, 235, 0.36);
+}
+
+.el-button--primary:not(.is-plain):not(.is-text):not(.is-link)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.5) 50%, transparent 60%);
+  transform: translateX(-130%);
+  animation: ks-btn-shine 3.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ks-btn-shine {
+  0% { transform: translateX(-130%); }
+  60% { transform: translateX(130%); }
+  100% { transform: translateX(130%); }
+}
+
+/* ---------- 5. 导航 / 侧栏菜单激活动效 ---------- */
+.ks-topbar .ks-nav a {
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.ks-topbar .ks-nav a:hover {
+  transform: translateY(-1px);
+}
+
+.ks-topbar .ks-nav a.router-link-active {
+  animation: ks-nav-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes ks-nav-glow {
+  0%, 100% { box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.18); }
+  50% { box-shadow: 0 6px 24px rgba(37, 99, 235, 0.64), inset 0 1px 0 rgba(255, 255, 255, 0.24); }
+}
+
+.ks-admin-sidebar .el-menu-item {
+  position: relative;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.ks-admin-sidebar .el-menu-item:hover {
+  transform: translateX(3px);
+}
+
+.ks-admin-sidebar .el-menu-item.is-active {
+  animation: ks-menu-active-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes ks-menu-active-pulse {
+  0%, 100% { box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+  50% { box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5); }
+}
+
+/* ---------- 6. 滚动条美化 ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #b6c4e8, #93a9d8);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #93a9d8, #7b92c4);
+  background-clip: padding-box;
+}
+
+/* ---------- 7. Element Plus 组件主题联动 ---------- */
+/* 表格 hover 行光晕 */
+.el-table .el-table__body tr:hover > td.el-table__cell {
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.06), rgba(139, 92, 246, 0.04)) !important;
+}
+
+/* 消息提示玻璃质感 */
+.el-message {
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* 输入框 / 选择器聚焦光环 */
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused {
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.16),
+    0 0 18px rgba(37, 99, 235, 0.16),
+    0 0 0 1px var(--el-color-primary) inset;
+}
+
+/* 上传拖拽区高亮动效 */
+.el-upload-dragger {
+  transition: all 0.28s ease;
+  border-color: rgba(37, 99, 235, 0.28);
+}
+
+.el-upload-dragger:hover {
+  border-color: var(--ks-primary);
+  background: rgba(37, 99, 235, 0.03);
+  box-shadow: inset 0 0 26px rgba(37, 99, 235, 0.07);
+  transform: translateY(-1px);
+}
+
+/* 处理中徽标脉冲（解析中 / 检索中） */
+.el-tag--primary {
+  animation: ks-tag-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes ks-tag-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ---------- 8. Logo 发光徽标 ---------- */
+.ks-topbar .ks-logo-badge {
+  animation: ks-logo-glow 3s ease-in-out infinite;
+}
+
+@keyframes ks-logo-glow {
+  0%, 100% { box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45); }
+  50% { box-shadow: 0 6px 28px rgba(37, 99, 235, 0.72), 0 0 0 5px rgba(37, 99, 235, 0.08); }
+}
+
+/* ---------- 9. 页面标题渐变字（深色动态背景适配：亮色渐变） ---------- */
+.ks-page-title {
+  background: linear-gradient(120deg, #f8fafc 8%, #93c5fd 55%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ================= 四轮：统一动态背景（与登录页对齐） ================= */
+
+/* ---------- 1. 通用动态背景层：深蓝渐变 + 模糊光晕漂移 + 网格遮罩 ---------- */
+.ks-dynamic-bg {
+  position: relative;
+  isolation: isolate;
+  min-height: 100%;
+  background: linear-gradient(150deg, #060d1f 0%, #0b1730 40%, #10254d 78%, #1e3a8a 130%);
+}
+
+/* 模糊光晕层：固定在视口，缓慢漂移 */
+.ks-dynamic-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 16% 10%, rgba(37, 99, 235, 0.5), transparent 68%),
+    radial-gradient(circle at 84% 34%, rgba(139, 92, 246, 0.34), transparent 62%),
+    radial-gradient(circle at 56% 90%, rgba(14, 165, 233, 0.3), transparent 60%);
+  filter: blur(64px);
+  animation: ks-bg-drift 18s ease-in-out infinite;
+}
+
+/* 网格线层：径向遮罩渐变隐没 */
+.ks-dynamic-bg::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 30%, transparent 75%);
+}
+
+@keyframes ks-bg-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(28px, -22px, 0) scale(1.12);
+  }
+}
+
+/* 业务内容抬升到装饰层之上 */
+.ks-dynamic-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 2. 浮动粒子层（与登录页 particle-float 同源） ---------- */
+.ks-particle {
+  position: fixed;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(147, 197, 253, 0.9), rgba(147, 197, 253, 0));
+  filter: blur(1px);
+  pointer-events: none;
+  z-index: 0;
+  animation: ks-particle-float 9s ease-in-out infinite;
+}
+
+.ks-particle.p1 { width: 6px; height: 6px; left: 12%; top: 24%; animation-duration: 7s; }
+.ks-particle.p2 { width: 10px; height: 10px; left: 72%; top: 16%; animation-duration: 9s; animation-delay: -2s; }
+.ks-particle.p3 { width: 5px; height: 5px; left: 38%; top: 62%; animation-duration: 8s; animation-delay: -4s; }
+.ks-particle.p4 { width: 8px; height: 8px; left: 82%; top: 70%; animation-duration: 10s; animation-delay: -5s; }
+.ks-particle.p5 { width: 5px; height: 5px; left: 8%; top: 78%; animation-duration: 7.5s; animation-delay: -1s; }
+.ks-particle.p6 { width: 7px; height: 7px; left: 60%; top: 88%; animation-duration: 9.5s; animation-delay: -6s; }
+
+@keyframes ks-particle-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate3d(18px, -42px, 0);
+    opacity: 0.95;
+  }
+}
+
+/* ================= 五轮：顶部栏动态统一 + 用户下拉玻璃拟态 ================= */
+
+/* 顶部栏光晕微动效层：与 ks-dynamic-bg 同源深蓝光晕，缓慢漂移 */
+.ks-topbar {
+  position: relative;
+}
+
+.ks-topbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(37, 99, 235, 0.5), transparent 58%),
+    radial-gradient(circle at 78% 130%, rgba(139, 92, 246, 0.34), transparent 52%),
+    radial-gradient(circle at 42% 170%, rgba(14, 165, 233, 0.3), transparent 55%);
+  animation: ks-topbar-glow 16s ease-in-out infinite;
+}
+
+.ks-topbar > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes ks-topbar-glow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate3d(30px, 0, 0);
+    opacity: 1;
+  }
+}
+
+/* 用户下拉：玻璃拟态 + 入场动画 + 条目 hover 动效 */
+.ks-user-popper.el-popper {
+  background: linear-gradient(160deg, rgba(8, 15, 34, 0.92) 0%, rgba(14, 26, 58, 0.84) 60%, rgba(23, 41, 94, 0.9) 100%);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(147, 197, 253, 0.24) !important;
+  border-radius: 14px;
+  box-shadow: 0 20px 54px rgba(2, 8, 23, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 6px;
+  animation: ks-menu-in 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+  overflow: hidden;
+}
+
+.ks-user-popper.el-popper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% -10%, rgba(59, 130, 246, 0.28), transparent 60%),
+    radial-gradient(circle at 100% 110%, rgba(139, 92, 246, 0.2), transparent 55%);
+}
+
+.ks-user-popper .el-popper__arrow {
+  display: none;
+}
+
+.ks-user-popper .el-dropdown-menu {
+  background: transparent;
+  padding: 0;
+}
+
+.ks-user-popper .el-dropdown-menu__item {
+  position: relative;
+  color: rgba(226, 232, 240, 0.86);
+  border-radius: 9px;
+  margin: 2px 0;
+  padding: 9px 14px;
+  font-weight: 500;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ks-user-popper .el-dropdown-menu__item:not(.is-disabled):hover {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.42), rgba(99, 102, 241, 0.34));
+  transform: translateX(3px);
+  box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.2), 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.ks-user-popper .el-dropdown-menu__item.is-disabled {
+  color: rgba(148, 163, 184, 0.78);
+}
+
+.ks-user-popper .el-dropdown-menu__item--divided {
+  margin-top: 4px;
+  border-top-color: rgba(147, 197, 253, 0.16);
+}
+
+@keyframes ks-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ================= 六轮：全站移动端响应式适配 ================= */
+
+/* 窄屏页面容器：收窄留白、字号阶梯 */
+@media (max-width: 768px) {
+  .ks-page {
+    padding: 14px 14px 24px;
+  }
+
+  .ks-page-title {
+    font-size: 19px;
+    margin-bottom: 12px;
+  }
+
+  .ks-topbar {
+    height: 54px;
+    padding: 0 12px;
+  }
+
+  .ks-topbar .ks-logo {
+    margin-right: 12px;
+    gap: 8px;
+  }
+
+  .ks-topbar .ks-logo-name {
+    font-size: 15px;
+  }
+
+  .ks-admin-main {
+    padding: 14px;
+  }
+
+  .ks-admin-sidebar {
+    width: 64px;
+    padding: 12px 6px;
+  }
+
+  .ks-admin-sidebar .el-menu-item {
+    justify-content: center;
+    padding: 0 !important;
+  }
+
+  .ks-admin-sidebar .el-menu-item span {
+    display: none;
+  }
+
+  /* 弹窗宽度自适应：窄屏全宽留边 */
+  .el-dialog {
+    width: calc(100vw - 20px) !important;
+    max-width: 100vw;
+    margin-top: 6vh !important;
+  }
+
+  .el-dialog__header {
+    padding: 14px 16px 12px;
+  }
+
+  .el-dialog__body {
+    padding: 14px 16px;
+  }
+
+  .el-dialog__footer {
+    padding: 10px 16px 14px;
+  }
+
+  /* 通知抽屉窄屏全宽 */
+  .el-drawer {
+    width: 100vw !important;
+    max-width: 100vw;
+  }
+
+  /* 卡片内边距收窄 */
+  .ks-card {
+    padding: 14px;
+  }
+
+  /* 表格外层允许横向滚动 */
+  .table-wrap,
+  .el-table {
+    width: 100%;
+  }
+
+  .el-table {
+    font-size: 13px;
+  }
+
+  /* 触屏友好：可点元素最小高度 */
+  .el-button {
+    min-height: 34px;
+  }
+
+  .el-form-item__label {
+    padding-bottom: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ks-page {
+    padding: 12px 10px 20px;
+  }
+
+  .ks-topbar .ks-logo-sub {
+    display: none;
+  }
+
+  /* 头部操作区允许换行，避免按钮挤压 */
+  .page-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .el-message-box {
+    width: calc(100vw - 30px) !important;
+  }
+}
+
+/* ============ 移动端全局响应式（弹窗 / 抽屉 / 表格） ============ */
+
+/* 弹窗窄屏自适应：覆盖组件 inline width，防止 660/720/760px 固定宽溢出 */
+@media (max-width: 768px) {
+  .el-dialog {
+    width: calc(100vw - 28px) !important;
+    max-width: 100%;
+    margin-top: 8vh !important;
+  }
+
+  .el-dialog .el-dialog__body {
+    max-height: 68vh;
+    overflow-y: auto;
+  }
+
+  .el-dialog .el-dialog__footer {
+    flex-shrink: 0;
+  }
+}
+
+/* 通知抽屉窄屏全宽（原 420px 固定，375px 屏会溢出） */
+@media (max-width: 600px) {
+  .ks-notice-drawer .el-drawer {
+    width: 100% !important;
+  }
+}
+
+/* 表格窄屏横向滚动兜底（管理后台等宽表） */
+@media (max-width: 768px) {
+  .el-table {
+    min-width: 0;
+  }
+
+  .el-table__body-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* 触屏友好：按钮/可点项最小热区 */
+@media (max-width: 768px) {
+  .ks-page .el-button {
+    min-height: 36px;
+  }
+
+  .mobile-nav-item {
+    padding: 14px 14px;
+  }
+}
+
+/* ============ 375px 窄屏深化（含本轮新增页面） ============ */
+@media (max-width: 375px) {
+  .ks-topbar {
+    height: 50px;
+    padding: 0 8px;
+  }
+
+  .ks-topbar .ks-logo {
+    gap: 6px;
+    margin-right: 8px;
+  }
+
+  .ks-topbar .ks-logo-badge {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .ks-topbar .ks-logo-name {
+    font-size: 13px;
+  }
+
+  .ks-user-arrow {
+    display: none;
+  }
+
+  .ks-avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .ks-bell {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ks-nav-toggle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ks-page {
+    padding: 10px 8px 18px;
+  }
+
+  .ks-page-title {
+    font-size: 17px;
+    margin-bottom: 10px;
+  }
+
+  .ks-page-title p {
+    font-size: 12px;
+  }
+
+  .ks-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  /* 表格窄屏收紧：减小单元格内边距，防列挤压 */
+  .el-table .cell {
+    padding: 0 6px;
+  }
+
+  .el-table th,
+  .el-table td {
+    padding: 6px 0;
+  }
+
+  .el-table__empty-block {
+    min-height: 60px;
+  }
+
+  /* 分页窄屏横向滚动 + 紧凑 */
+  .el-pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 6px;
+  }
+
+  .el-pagination .el-pagination__sizes,
+  .el-pagination .el-pagination__jump {
+    display: none;
+  }
+
+  /* 表单窄屏：label 与控件间距 */
+  .el-form-item {
+    margin-bottom: 14px;
+  }
+
+  .el-form--label-top .el-form-item__label {
+    padding-bottom: 2px;
+  }
+
+  /* 移动端抽屉全宽 */
+  .el-drawer.ks-mobile-nav .el-drawer__body {
+    padding: 10px 8px;
+  }
+
+  .mobile-nav-item {
+    padding: 12px 10px;
+    border-radius: 10px;
+  }
+
+  /* 用户下拉窄屏内容不换行 */
+  .ks-user-popper {
+    min-width: 150px !important;
+  }
+
+  .ks-user-popper .el-dropdown-menu__item {
+    font-size: 13px;
+    padding: 9px 14px;
+  }
+}
+
+/* ============ 顶部导航窄屏折叠（统一全局断点） ============ */
+/* 修复：折叠断点原先写在 App.vue scoped，被 theme.css 后注入的
+   .ks-topbar .ks-nav{display:flex} 覆盖，导致窄屏下横向导航挤压/截断；
+   现改用全局选择器 + !important 确保折叠稳定生效。 */
+@media (max-width: 1180px) {
+  .ks-topbar .ks-nav {
+    display: none !important;
+  }
+  .ks-topbar .ks-nav-toggle {
+    display: inline-flex !important;
+  }
+  .ks-topbar .ks-logo-sub {
+    display: none;
+  }
+}
+
+/* 窄屏过渡：769-1180px 收窄页面留白，避免标题与顶栏层级粘连 */
+@media (max-width: 1180px) and (min-width: 769px) {
+  .ks-page {
+    padding: 18px 20px 28px;
+  }
+}
+
+/* ============ 全局统一：深色企业风辅助令牌（组织中心 / 数据看板 / 打卡共用） ============ */
+:root {
+  /* 深色横幅（hero）统一背景 */
+  --ks-hero-bg: linear-gradient(135deg, #0b1730 0%, #12295c 48%, #1e3a8a 100%);
+  --ks-hero-border: rgba(147, 197, 253, 0.22);
+  --ks-hero-shadow: 0 14px 34px -14px rgba(30, 58, 138, 0.55);
+
+  /* 深色区玻璃态 */
+  --ks-glass-bg: rgba(255, 255, 255, 0.06);
+  --ks-glass-border: rgba(255, 255, 255, 0.12);
+  --ks-glass-text: rgba(226, 232, 240, 0.92);
+
+  /* 企业图表网格 / 坐标轴 */
+  --ks-chart-grid: rgba(100, 116, 139, 0.14);
+  --ks-chart-axis: rgba(100, 116, 139, 0.2);
+
+  /* 指标色板（看板 / 统计卡统一） */
+  --ks-metric-blue: #2563eb;
+  --ks-metric-emerald: #10b981;
+  --ks-metric-amber: #f59e0b;
+  --ks-metric-violet: #8b5cf6;
+  --ks-metric-cyan: #06b6d4;
+  --ks-metric-indigo: #6366f1;
+}
+

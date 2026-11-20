@@ -1,0 +1,59 @@
+# ===== 依赖与虚拟环境 =====
+node_modules/
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== 构建产物 =====
+web/dist/
+dist/
+build/
+*.tsbuildinfo
+
+# ===== 环境变量与密钥（严禁提交）=====
+.env
+.env.local
+.env.production
+.env.development.local
+*.pem
+*.key
+*.p12
+secrets/
+
+# ===== 运行期数据 =====
+server/ai_assistant.db
+server/ai_assistant.db-shm
+server/ai_assistant.db-wal
+*.sqlite
+*.sqlite3
+server/chroma_data/
+server/uploads/
+server/logs/
+logs/
+uploads/
+chroma_data/
+
+# ===== 日志与临时文件 =====
+*.log
+_*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.iml
+
+# ===== 其他 =====
+server/.env
+web/.env.production

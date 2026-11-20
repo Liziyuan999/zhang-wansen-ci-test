@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知寻 KnowSeek —— 企业级智能知识中枢 · 产品原型</title>
+<style>
+  :root{
+    --bg:#0B1220; --bg-soft:#0E1728; --card:#111E33; --card-2:#0F1B2E;
+    --border:#1E2F4A; --border-2:#27405F;
+    --nav:#0A1628; --nav-line:#1B314F;
+    --blue:#1E6FFF; --blue-2:#4D8DFF; --cyan:#00D2FF; --cyan-2:#66E6FF;
+    --text:#E6EFF9; --text-2:#9FB2CC; --text-3:#6B7F9B;
+    --green:#2FBF71; --orange:#FF9F43; --red:#FF5C69; --purple:#8B7CFF;
+    --shadow:0 12px 32px rgba(0,0,0,.35);
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#2A4268;border-radius:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  a{text-decoration:none;color:inherit}
+  button{font-family:inherit;cursor:pointer;border:none;outline:none}
+  input,select,textarea{font-family:inherit;outline:none}
+
+  /* ========== 通用组件 ========== */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;transition:all .2s;border:1px solid transparent}
+  .btn-primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;box-shadow:0 6px 18px rgba(30,111,255,.35)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(30,111,255,.5);filter:brightness(1.08)}
+  .btn-ghost{background:transparent;border-color:var(--border-2);color:var(--text-2)}
+  .btn-ghost:hover{border-color:var(--blue);color:var(--cyan)}
+  .btn-sm{padding:6px 12px;font-size:13px;border-radius:8px}
+  .btn-danger{background:rgba(255,92,105,.12);color:var(--red);border:1px solid rgba(255,92,105,.35)}
+  .btn-danger:hover{background:rgba(255,92,105,.22)}
+  .btn-success{background:rgba(47,191,113,.12);color:var(--green);border:1px solid rgba(47,191,113,.35)}
+  .btn-success:hover{background:rgba(47,191,113,.22)}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;gap:4px}
+  .tag-blue{background:rgba(30,111,255,.14);color:var(--cyan)}
+  .tag-green{background:rgba(47,191,113,.14);color:var(--green)}
+  .tag-orange{background:rgba(255,159,67,.14);color:var(--orange)}
+  .tag-red{background:rgba(255,92,105,.14);color:var(--red)}
+  .tag-purple{background:rgba(139,124,255,.14);color:var(--purple)}
+  .tag-gray{background:rgba(155,178,204,.12);color:var(--text-2)}
+  .section-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px}
+  .section-title .dot{width:4px;height:18px;background:linear-gradient(var(--blue),var(--cyan));border-radius:4px}
+  .input{background:var(--bg-soft);border:1px solid var(--border-2);border-radius:10px;padding:10px 14px;color:var(--text);font-size:14px;width:100%;transition:border .2s}
+  .input::placeholder{color:var(--text-3)}
+  .input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,111,255,.15)}
+  .modal-mask{position:fixed;inset:0;background:rgba(3,8,16,.7);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100;animation:fadeIn .25s}
+  .modal{background:var(--card);border:1px solid var(--border-2);border-radius:18px;width:560px;max-width:92vw;max-height:86vh;overflow:auto;box-shadow:0 24px 64px rgba(0,0,0,.55);animation:popIn .25s}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border)}
+  .modal-head h3{font-size:16px}
+  .modal-body{padding:22px}
+  .modal-x{width:30px;height:30px;border-radius:8px;background:var(--bg-soft);color:var(--text-2);display:flex;align-items:center;justify-content:center;font-size:15px;transition:.2s}
+  .modal-x:hover{background:rgba(255,92,105,.15);color:var(--red)}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes popIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+  @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+  .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:rgba(10,22,40,.95);border:1px solid var(--border-2);color:var(--text);padding:12px 22px;border-radius:12px;font-size:14px;z-index:300;display:none;box-shadow:0 12px 32px rgba(0,0,0,.5);white-space:nowrap}
+  .toast.show{display:block;animation:popIn .3s}
+  .toast.success{border-color:rgba(47,191,113,.5);color:var(--green)}
+  .toast.error{border-color:rgba(255,92,105,.5);color:var(--red)}
+
+  /* ========== 登录页 ========== */
+  .login-page{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(1200px 800px at 20% 0%,#123060 0%,#0B1220 45%,#060A12 100%);z-index:200}
+  .login-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(30,111,255,.22),transparent 70%);filter:blur(40px);animation:float 8s infinite alternate}
+  @keyframes float{from{transform:translate(-20px,-10px)}to{transform:translate(30px,20px)}}
+  .login-box{position:relative;width:420px;background:rgba(17,30,51,.85);border:1px solid rgba(39,64,95,.8);border-radius:20px;padding:40px 36px;box-shadow:0 30px 80px rgba(0,0,0,.6);backdrop-filter:blur(14px)}
+  .brand{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .brand-logo{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#fff;box-shadow:0 8px 20px rgba(30,111,255,.45)}
+  .brand-name{font-size:22px;font-weight:800;letter-spacing:.5px}
+  .brand-sub{font-size:12px;color:var(--cyan);letter-spacing:2px;margin-top:2px}
+  .login-title{font-size:15px;color:var(--text-2);margin:22px 0 24px;text-align:center}
+  .login-field{margin-bottom:16px}
+  .login-field label{display:block;font-size:13px;color:var(--text-2);margin-bottom:7px}
+  .login-box .input{padding:12px 15px}
+  .login-row{display:flex;align-items:center;justify-content:space-between;margin:6px 0 20px;font-size:13px;color:var(--text-2)}
+  .login-row label{display:flex;align-items:center;gap:6px;cursor:pointer}
+  .login-row a{color:var(--cyan)}
+  .login-row a:hover{text-decoration:underline}
+  .login-btn{width:100%;padding:13px;border-radius:11px;font-size:15px;font-weight:700}
+  .login-hint{text-align:center;margin-top:18px;font-size:12px;color:var(--text-3)}
+  .login-hint b{color:var(--cyan);font-weight:600}
+
+  /* ========== 主框架 ========== */
+  .app{display:none;min-height:100vh;background:var(--bg)}
+  .app.show{display:block}
+  .topnav{position:sticky;top:0;z-index:90;height:60px;background:rgba(10,22,40,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--nav-line);display:flex;align-items:center;padding:0 24px;gap:8px}
+  .nav-brand{display:flex;align-items:center;gap:10px;margin-right:28px;cursor:pointer}
+  .nav-brand .brand-logo{width:36px;height:36px;font-size:16px;border-radius:9px}
+  .nav-brand .brand-name{font-size:17px}
+  .nav-menu{display:flex;gap:4px;flex:1}
+  .nav-item{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;color:var(--text-2);font-size:14px;font-weight:500;transition:.2s;position:relative}
+  .nav-item:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .nav-item.active{color:#fff;background:linear-gradient(135deg,rgba(30,111,255,.25),rgba(0,210,255,.12));box-shadow:inset 0 0 0 1px rgba(30,111,255,.4)}
+  .nav-item.active::after{content:"";position:absolute;bottom:-1px;left:20%;width:60%;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px}
+  .nav-item .ico{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center}
+  .nav-user{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:10px;cursor:pointer;transition:.2s}
+  .nav-user:hover{background:rgba(255,255,255,.06)}
+  .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+  .nav-user .uname{font-size:13px;color:var(--text-2)}
+  .nav-user .urow{display:flex;align-items:center;gap:10px}
+  .page{display:none;padding:24px;max-width:1440px;margin:0 auto;animation:slideUp .3s}
+  .page.active{display:block}
+  .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-3);margin-bottom:18px}
+  .breadcrumb b{color:var(--text-2);font-weight:600}
+  .breadcrumb .sep{color:var(--text-3)}
+  .breadcrumb .cur{color:var(--cyan)}
+
+  /* ========== 文档库页 ========== */
+  .doc-toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+  .search-box{position:relative;flex:1;min-width:260px}
+  .search-box .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-3)}
+  .search-box .input{padding-left:42px}
+  .filter-chip{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{padding:7px 14px;border-radius:20px;font-size:13px;background:var(--card);border:1px solid var(--border-2);color:var(--text-2);cursor:pointer;transition:.2s}
+  .chip:hover{border-color:var(--blue);color:var(--cyan)}
+  .chip.active{background:linear-gradient(135deg,rgba(30,111,255,.25),rgba(0,210,255,.1));border-color:var(--blue);color:#fff}
+  .doc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+  .stat-card{padding:16px 18px}
+  .stat-card .num{font-size:26px;font-weight:800;margin-top:6px}
+  .stat-card .lbl{font-size:12px;color:var(--text-3);margin-top:4px}
+  .stat-card .trend{font-size:12px;color:var(--green);display:inline-flex;align-items:center;gap:4px;margin-left:8px}
+  .doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .doc-card{padding:18px;transition:.25s;cursor:pointer;position:relative}
+  .doc-card:hover{transform:translateY(-4px);border-color:var(--blue-2);box-shadow:0 16px 40px rgba(30,111,255,.18)}
+  .doc-card .dhead{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .doc-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+  .fi-pdf{background:rgba(255,92,105,.16);color:var(--red)}
+  .fi-docx{background:rgba(30,111,255,.16);color:var(--cyan)}
+  .fi-xlsx{background:rgba(47,191,113,.16);color:var(--green)}
+  .fi-pptx{background:rgba(255,159,67,.16);color:var(--orange)}
+  .fi-txt{background:rgba(139,124,255,.16);color:var(--purple)}
+  .doc-card .dname{font-size:14px;font-weight:700;line-height:1.35}
+  .doc-card .dmeta{font-size:12px;color:var(--text-3);margin-top:4px}
+  .doc-card .dbody{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .doc-card .dfoot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;font-size:12px;color:var(--text-3)}
+  .doc-card .dops{display:flex;gap:6px}
+  .doc-card .dops button{padding:4px 10px;font-size:12px;border-radius:7px}
+
+  /* ========== 上传弹窗 ========== */
+  .upload-zone{border:2px dashed var(--border-2);border-radius:14px;padding:34px;text-align:center;color:var(--text-2);transition:.2s;background:var(--bg-soft)}
+  .upload-zone:hover{border-color:var(--blue);background:rgba(30,111,255,.06)}
+  .upload-zone .big{font-size:34px;margin-bottom:8px}
+  .upload-files{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .ufile{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;font-size:13px}
+  .ufile .nm{flex:1;color:var(--text)}
+  .ufile .st{font-size:12px;color:var(--text-3);min-width:64px;text-align:right}
+  .progress-steps{display:flex;align-items:center;gap:4px;margin:6px 0 10px;flex:1;min-width:200px}
+  .pstep{flex:1;text-align:center}
+  .pstep .pline{height:5px;border-radius:4px;background:var(--border-2);overflow:hidden;position:relative;margin-bottom:6px}
+  .pstep .pline i{position:absolute;inset:0;background:linear-gradient(90deg,var(--blue),var(--cyan));width:0%;border-radius:4px;transition:width .5s}
+  .pstep .plbl{font-size:11px;color:var(--text-3);white-space:nowrap}
+  .pstep.done .pline{background:rgba(30,111,255,.2)}
+  .pstep.done .pline i{width:100%}
+  .pstep.done .plbl{color:var(--cyan)}
+  .pstep.active .plbl{color:#fff;font-weight:600}
+  .progress-bar{height:8px;background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:12px}
+  .progress-bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .4s;border-radius:6px}
+
+  /* ========== 对话页 ========== */
+  .chat-layout{display:grid;grid-template-columns:280px 1fr;gap:18px;height:calc(100vh - 128px);min-height:560px}
+  .chat-side{display:flex;flex-direction:column;padding:16px;gap:8px}
+  .chat-side .btn-new{width:100%;justify-content:center;margin-bottom:8px}
+  .session-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;cursor:pointer;transition:.18s;border:1px solid transparent}
+  .session-item:hover{background:rgba(255,255,255,.05)}
+  .session-item.active{background:rgba(30,111,255,.12);border-color:rgba(30,111,255,.35)}
+  .session-item .sname{flex:1;font-size:13px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .session-item.active .sname{color:#fff}
+  .session-item .stime{font-size:11px;color:var(--text-3)}
+  .chat-main{display:flex;flex-direction:column;overflow:hidden}
+  .chat-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+  .chat-head .ctitle{font-size:15px;font-weight:700}
+  .chat-head .csub{font-size:12px;color:var(--text-3);margin-top:3px}
+  .chat-head .chops{display:flex;gap:8px}
+  .chat-body{flex:1;overflow-y:auto;padding:26px 22px;display:flex;flex-direction:column;gap:18px;background:linear-gradient(180deg,var(--bg) 0%,#0D1727 100%)}
+  .msg{display:flex;gap:12px;max-width:78%;animation:slideUp .25s}
+  .msg.assistant{align-self:flex-start}
+  .msg.user{align-self:flex-end;flex-direction:row-reverse}
+  .msg .mav{width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .msg.user .mav{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff}
+  .msg.assistant .mav{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff}
+  .msg .mb{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.7}
+  .msg.user .mb{background:linear-gradient(135deg,rgba(30,111,255,.25),rgba(0,210,255,.08));border-color:rgba(30,111,255,.4)}
+  .msg .mtime{font-size:11px;color:var(--text-3);margin-top:8px}
+  .ref-chip{display:inline-flex;align-items:center;gap:4px;background:rgba(30,111,255,.14);border:1px solid rgba(30,111,255,.4);color:var(--cyan);border-radius:8px;padding:2px 8px;font-size:12px;margin:0 3px;cursor:pointer;transition:.2s}
+  .ref-chip:hover{background:rgba(30,111,255,.3)}
+  .chat-input-wrap{padding:16px 20px;border-top:1px solid var(--border);background:var(--bg-soft)}
+  .chat-input-box{display:flex;align-items:flex-end;gap:10px;background:var(--card);border:1px solid var(--border-2);border-radius:14px;padding:8px 10px;transition:.2s}
+  .chat-input-box:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,111,255,.12)}
+  .chat-input-box textarea{flex:1;background:transparent;border:none;color:var(--text);font-size:14px;resize:none;padding:8px;max-height:120px;line-height:1.6}
+  .chat-input-box textarea::placeholder{color:var(--text-3)}
+  .chat-tools{display:flex;gap:8px;align-items:center;padding:4px 2px 0}
+  .chat-tools .tbtn{color:var(--text-3);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:15px}
+  .chat-tools .tbtn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+
+  /* ========== 溯源弹窗 ========== */
+  .ref-item{display:flex;gap:14px;padding:14px;border:1px solid var(--border);border-radius:12px;margin-bottom:12px;background:var(--bg-soft)}
+  .ref-item .idx{width:30px;height:30px;border-radius:8px;background:rgba(30,111,255,.15);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+  .ref-item .rtitle{font-size:13px;font-weight:700;margin-bottom:4px}
+  .ref-item .rdesc{font-size:12px;color:var(--text-2);line-height:1.6}
+  .ref-item .rmeta{display:flex;gap:10px;margin-top:8px;font-size:11px;color:var(--text-3);flex-wrap:wrap}
+  .ref-item .goto{color:var(--cyan);cursor:pointer;font-size:12px;display:inline-flex;align-items:center;gap:4px}
+  .ref-item .goto:hover{text-decoration:underline}
+
+  /* ========== Agent 任务页 ========== */
+  .agent-layout{display:grid;grid-template-columns:380px 1fr;gap:18px}
+  .agent-form{padding:22px}
+  .task-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .task-type{padding:16px;border:1px solid var(--border-2);border-radius:12px;cursor:pointer;transition:.2s;background:var(--bg-soft)}
+  .task-type:hover{border-color:var(--blue)}
+  .task-type.selected{border-color:var(--blue);background:rgba(30,111,255,.12);box-shadow:0 0 0 1px rgba(30,111,255,.4)}
+  .task-type .tico{font-size:22px;margin-bottom:8px}
+  .task-type .tname{font-size:14px;font-weight:700}
+  .task-type .tdesc{font-size:12px;color:var(--text-3);margin-top:4px;line-height:1.5}
+  .field-label{font-size:13px;color:var(--text-2);font-weight:600;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+  .field-label .hl{color:var(--cyan)}
+  .doc-pick-list{display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;padding-right:4px}
+  .doc-pick{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:.15s}
+  .doc-pick:hover{border-color:var(--blue)}
+  .doc-pick.checked{border-color:var(--blue);background:rgba(30,111,255,.1)}
+  .doc-pick .ck{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border-2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0;transition:.15s}
+  .doc-pick.checked .ck{background:var(--blue);border-color:var(--blue)}
+  .switch{position:relative;width:42px;height:23px;border-radius:20px;background:var(--border-2);transition:.2s;display:inline-block;cursor:pointer;flex-shrink:0}
+  .switch::after{content:"";position:absolute;width:17px;height:17px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.2s}
+  .switch.on{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+  .switch.on::after{left:22px}
+  .agent-right{display:flex;flex-direction:column;gap:18px}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+  .panel-head h4{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .panel-head .count{background:rgba(255,159,67,.15);color:var(--orange);font-size:12px;padding:2px 9px;border-radius:14px}
+  .task-item{padding:16px 20px;border-bottom:1px solid var(--border)}
+  .task-item:last-child{border-bottom:none}
+  .task-item .thead{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .task-item .ttitle{flex:1;font-size:14px;font-weight:600}
+  .task-item .tmeta{display:flex;gap:14px;font-size:12px;color:var(--text-3);margin-bottom:10px;flex-wrap:wrap}
+  .task-item .tdesc{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:12px;background:var(--bg-soft);padding:10px 14px;border-radius:10px}
+  .task-item .tops{display:flex;gap:8px}
+  .progress-mini{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-3)}
+  .progress-mini .bar{flex:1;height:6px;background:var(--border-2);border-radius:4px;overflow:hidden}
+  .progress-mini .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:4px}
+
+  /* ========== 管理员后台 ========== */
+  .admin-layout{display:grid;grid-template-columns:220px 1fr;gap:18px}
+  .admin-side{padding:14px;display:flex;flex-direction:column;gap:4px}
+  .admin-side .atitle{font-size:12px;color:var(--text-3);padding:10px 12px 6px;letter-spacing:1px}
+  .admin-menu{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;color:var(--text-2);font-size:14px;cursor:pointer;transition:.18s}
+  .admin-menu:hover{background:rgba(255,255,255,.05);color:var(--text)}
+  .admin-menu.active{background:linear-gradient(135deg,rgba(30,111,255,.22),rgba(0,210,255,.08));color:#fff;border:1px solid rgba(30,111,255,.35)}
+  .admin-main{display:flex;flex-direction:column;gap:18px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .admin-table{width:100%;border-collapse:collapse;font-size:13px}
+  .admin-table thead th{background:var(--bg-soft);color:var(--text-2);font-weight:600;text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);white-space:nowrap}
+  .admin-table tbody td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text-2)}
+  .admin-table tbody tr{transition:.15s}
+  .admin-table tbody tr:hover{background:rgba(255,255,255,.03)}
+  .admin-table .col-title{color:var(--text);font-weight:600}
+  .tabs{display:flex;gap:4px;background:var(--bg-soft);border-radius:10px;padding:4px;width:max-content}
+  .tab-item{padding:7px 16px;border-radius:8px;font-size:13px;color:var(--text-2);cursor:pointer;transition:.2s}
+  .tab-item.active{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-weight:600}
+
+  /* 空态 */
+  .empty{display:flex;flex-direction:column;align-items:center;gap:12px;padding:60px 20px;color:var(--text-3)}
+  .empty .eico{font-size:40px;opacity:.5}
+
+  @media (max-width:1100px){
+    .agent-layout{grid-template-columns:1fr}
+    .admin-layout{grid-template-columns:1fr}
+    .chat-layout{grid-template-columns:1fr}
+  }
+  @media (max-width:900px){
+    .doc-stats,.kpi-grid{grid-template-columns:1fr 1fr}
+    .nav-menu .nav-item span.lbl{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= 登录页 ================= -->
+<div class="login-page" id="loginPage">
+  <div class="login-glow" style="top:-10%;right:-10%"></div>
+  <div class="login-glow" style="bottom:-15%;left:-5%;background:radial-gradient(circle,rgba(0,210,255,.15),transparent 70%)"></div>
+  <div class="login-box">
+    <div class="brand">
+      <div class="brand-logo">K</div>
+      <div>
+        <div class="brand-name">知寻 KnowSeek</div>
+        <div class="brand-sub">让企业知识触手可及</div>
+      </div>
+    </div>
+    <div class="login-title">企业级智能知识中枢 · 统一登录</div>
+    <div class="login-field">
+      <label>账号</label>
+      <input class="input" id="loginUser" type="text" placeholder="请输入工号 / 邮箱" value="zhang.wei">
+    </div>
+    <div class="login-field">
+      <label>密码</label>
+      <input class="input" id="loginPass" type="password" placeholder="请输入密码" value="••••••••">
+    </div>
+    <div class="login-row">
+      <label><input type="checkbox" checked style="accent-color:var(--blue)"> 记住我</label>
+      <a href="javascript:void(0)" onclick="toast('请联系管理员重置密码','info')">忘记密码</a>
+    </div>
+    <button class="btn btn-primary login-btn" onclick="doLogin()">登 录</button>
+    <div class="login-hint">演示账号：<b>zhang.wei</b>（知识库用户）／ <b>admin</b>（管理员）· 密码任意</div>
+  </div>
+</div>
+
+<!-- ================= 主应用 ================= -->
+<div class="app" id="appMain">
+
+  <!-- 顶部导航 -->
+  <nav class="topnav">
+    <div class="nav-brand" onclick="goPage('doc')">
+      <div class="brand-logo">K</div>
+      <div>
+        <div class="brand-name" style="font-size:15px">知寻 <span style="color:var(--cyan)">KnowSeek</span></div>
+      </div>
+    </div>
+    <div class="nav-menu">
+      <a class="nav-item active" data-page="doc" onclick="goPage('doc')"><span class="ico">📚</span><span class="lbl">文档库</span></a>
+      <a class="nav-item" data-page="chat" onclick="goPage('chat')"><span class="ico">💬</span><span class="lbl">智能对话</span></a>
+      <a class="nav-item" data-page="agent" onclick="goPage('agent')"><span class="ico">🤖</span><span class="lbl">Agent 任务</span></a>
+      <a class="nav-item" data-page="admin" onclick="goPage('admin')"><span class="ico">🛡️</span><span class="lbl">管理员后台</span></a>
+    </div>
+    <div class="nav-user" onclick="logout()" title="点击退出登录">
+      <div class="urow">
+        <div class="avatar" id="navAvatar">张</div>
+        <div>
+          <div class="uname" id="navUserName">张伟</div>
+          <div class="uname" style="font-size:11px;color:var(--text-3)" id="navUserRole">知识库用户</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ 文档库页 ============ -->
+  <div class="page active" id="page-doc">
+    <div class="breadcrumb"><b>首页</b><span class="sep">/</span><span class="cur">文档库</span></div>
+    <div class="doc-toolbar">
+      <div class="search-box">
+        <span class="ico">🔍</span>
+        <input class="input" placeholder="搜索文档名称、关键词或内容摘要…" oninput="filterDocs(this.value)">
+      </div>
+      <div class="filter-chip" id="typeFilter">
+        <span class="chip active" data-t="all" onclick="filterType(this)">全部</span>
+        <span class="chip" data-t="pdf" onclick="filterType(this)">PDF</span>
+        <span class="chip" data-t="docx" onclick="filterType(this)">Word</span>
+        <span class="chip" data-t="xlsx" onclick="filterType(this)">Excel</span>
+        <span class="chip" data-t="pptx" onclick="filterType(this)">PPT</span>
+        <span class="chip" data-t="txt" onclick="filterType(this)">文本</span>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('uploadModal')">⬆ 上传文档</button>
+    </div>
+    <div class="doc-stats">
+      <div class="card stat-card"><div class="lbl">文档总数</div><div class="num" style="color:var(--cyan)">1,286</div><div class="lbl">较上周 +3.2%<span class="trend">↗</span></div></div>
+      <div class="card stat-card"><div class="lbl">已向量化</div><div class="num" style="color:var(--green)">1,241</div><div class="lbl">向量覆盖率 96.5%</div></div>
+      <div class="card stat-card"><div class="lbl">本月新增</div><div class="num" style="color:var(--orange)">86</div><div class="lbl">平均解析耗时 8.4s</div></div>
+      <div class="card stat-card"><div class="lbl">问答引用</div><div class="num" style="color:var(--purple)">9,408</div><div class="lbl">本周对话引用 1,132 次</div></div>
+    </div>
+    <div class="doc-grid" id="docGrid"></div>
+  </div>
+
+  <!-- ============ 对话页 ============ -->
+  <div class="page" id="page-chat">
+    <div class="breadcrumb"><b>首页</b><span class="sep">/</span><span class="cur">智能对话</span></div>
+    <div class="chat-layout">
+      <div class="card chat-side">
+        <button class="btn btn-primary btn-new" onclick="newSession()">＋ 新建会话</button>
+        <div class="session-item active" onclick="selSession(this)"><span class="sname">📄 三季度研发周报素材整理</span><span class="stime">10:24</span></div>
+        <div class="session-item" onclick="selSession(this)"><span class="sname">📑 《供应商准入制度》要点问答</span><span class="stime">昨天</span></div>
+        <div class="session-item" onclick="selSession(this)"><span class="sname">🧾 2025 差旅报销制度对比</span><span class="stime">昨天</span></div>
+        <div class="session-item" onclick="selSession(this)"><span class="sname">🤖 Agent：竞品方案自动撰写</span><span class="stime">周二</span></div>
+        <div class="session-item" onclick="selSession(this)"><span class="sname">📈 年度预算文档差异分析</span><span class="stime">周一</span></div>
+      </div>
+      <div class="card chat-main">
+        <div class="chat-head">
+          <div>
+            <div class="ctitle">📄 三季度研发周报素材整理</div>
+            <div class="csub">会话 ID：SES-20261022-0842 · 知识库：研发中心</div>
+          </div>
+          <div class="chops">
+            <button class="btn btn-ghost btn-sm" onclick="toast('上下文已重置','success')">↻ 重置上下文</button>
+            <button class="btn btn-ghost btn-sm" onclick="toast('反馈已提交，感谢您的反馈','success')">👍 反馈</button>
+          </div>
+        </div>
+        <div class="chat-body" id="chatBody">
+          <div class="msg assistant">
+            <div class="mav">K</div>
+            <div class="mb">
+              你好，我是<span style="color:var(--cyan);font-weight:600">知寻 KnowSeek</span>。已为您接通「研发中心」知识库，可以回答文档内容、比对版本、生成周报或抽取数据。请问需要什么帮助？
+              <div class="mtime">10:24:01</div>
+            </div>
+          </div>
+          <div class="msg user">
+            <div class="mav">张</div>
+            <div class="mb">请从《Q3项目进展周报汇总.pdf》里整理出各项目的进展、风险与下周计划，按周报格式输出。<div class="mtime">10:24:38</div></div>
+          </div>
+          <div class="msg assistant">
+            <div class="mav">K</div>
+            <div class="mb">
+              已为你整理三季度研发周报素材，共覆盖 <b>6 个项目</b>、引用 <b>3 份文档</b>，摘要如下：<br><br>
+              <b>一、项目进展</b><br>
+              • 知寻平台 v1.2：文档解析服务完成 12 类格式适配，向量化吞吐提升至 2,400 页/小时<span class="ref-chip" onclick="openModal('refModal')">[1]</span><br>
+              • Agent 编排引擎：LangGraph 多智能体流程联调通过，人工确认节点上线<span class="ref-chip" onclick="openModal('refModal')">[1]</span><br>
+              • 移动端知识库：iOS / Android 双端进入灰度，P0 缺陷清零<span class="ref-chip" onclick="openModal('refModal')">[2]</span><br><br>
+              <b>二、风险与应对</b><br>
+              • OCR 服务 GPU 资源紧张 → 已扩容 2 台推理节点（预计 11 月初缓解）<span class="ref-chip" onclick="openModal('refModal')">[2]</span><br>
+              • 供应商数据迁移存在接口兼容风险 → 已完成联调方案评审<span class="ref-chip" onclick="openModal('refModal')">[3]</span><br><br>
+              <b>三、下周计划</b><br>
+              • 完成 v1.2 版本回归测试与上线评审<br>
+              • Agent 模板市场一期（3 类模板）开发启动<br><br>
+              <span style="font-size:12px;color:var(--text-3)">需要我按正式周报模板生成《研发中心 Q3 第 N 周周报》文档吗？</span>
+              <div class="mtime">10:24:52 · 已引用 3 个来源</div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-wrap">
+          <div class="chat-input-box">
+            <textarea id="chatInput" rows="1" placeholder="输入问题，按 Enter 发送… 引用上屏内容可点击溯源"></textarea>
+            <button class="btn btn-primary btn-sm" style="align-self:flex-end" onclick="sendMsg()">发送</button>
+          </div>
+          <div class="chat-tools">
+            <span style="font-size:11px;color:var(--text-3)">回答将基于企业知识库生成，点击引用编号可查看溯源</span>
+            <span style="flex:1"></span>
+            <button class="tbtn" title="附件" onclick="toast('可选择知识库文档作为上下文','info')">📎</button>
+            <button class="tbtn" title="截图" onclick="toast('请使用截图工具后粘贴到输入框','info')">📷</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Agent 任务页 ============ -->
+  <div class="page" id="page-agent">
+    <div class="breadcrumb"><b>首页</b><span class="sep">/</span><span class="cur">Agent 任务</span></div>
+    <div class="agent-layout">
+      <div class="card agent-form">
+        <div class="section-title"><span class="dot"></span>创建 Agent 任务</div>
+        <div class="field-label"><span class="hl">*</span>任务类型</div>
+        <div class="task-type-grid" id="taskTypeGrid">
+          <div class="task-type selected" data-t="weekly" onclick="selTaskType(this)"><div class="tico">📊</div><div class="tname">周报 / 月报生成</div><div class="tdesc">聚合多文档进展自动生成周期报告</div></div>
+          <div class="task-type" data-t="diff" onclick="selTaskType(this)"><div class="tico">🆚</div><div class="tname">文档对比</div><div class="tdesc">版本间差异逐条比对并输出清单</div></div>
+          <div class="task-type" data-t="write" onclick="selTaskType(this)"><div class="tico">✍️</div><div class="tname">方案撰写</div><div class="tdesc">基于资料库起草技术 / 管理方案</div></div>
+          <div class="task-type" data-t="extract" onclick="selTaskType(this)"><div class="tico">🧩</div><div class="tname">知识抽取</div><div class="tdesc">抽取条款、指标等结构化知识</div></div>
+        </div>
+        <div class="field-label"><span class="hl">*</span>选择文档（可多选）</div>
+        <div class="doc-pick-list" id="agentDocList"></div>
+        <div class="field-label">人工确认</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2)">
+          <span class="switch on" id="confirmSwitch" onclick="toggleSwitch(this)"></span>
+          <span>执行前需要人工确认任务描述与文档范围</span>
+        </div>
+        <div class="field-label">任务描述</div>
+        <textarea class="input" id="agentDesc" rows="3" placeholder="描述任务目标、输出要求、格式偏好…">汇总所选文档的项目进展与风险，输出《研发中心周报》Markdown 初稿。</textarea>
+        <div style="display:flex;gap:10px;margin-top:20px">
+          <button class="btn btn-primary" style="flex:1" onclick="submitAgent()">🚀 提交任务</button>
+          <button class="btn btn-ghost" onclick="toast('已清空表单','info')">清空</button>
+        </div>
+      </div>
+      <div class="agent-right">
+        <div class="card">
+          <div class="panel-head"><h4>⏳ 待人工确认 <span class="count" id="pendingCount">2</span></h4><span style="font-size:12px;color:var(--text-3)">Agent 已生成草稿，等待您确认后执行</span></div>
+          <div id="pendingList"></div>
+        </div>
+        <div class="card">
+          <div class="panel-head"><h4>📋 历史任务</h4><span style="font-size:12px;color:var(--text-3)">最近 30 天</span></div>
+          <div id="historyList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 管理员后台 ============ -->
+  <div class="page" id="page-admin">
+    <div class="breadcrumb"><b>首页</b><span class="sep">/</span><span class="cur">管理员后台</span></div>
+    <div class="admin-layout">
+      <div class="card admin-side">
+        <div class="atitle">系统管理</div>
+        <div class="admin-menu active" data-am="dept" onclick="switchAdmin(this)"><span>🏢</span>部门管理</div>
+        <div class="admin-menu" data-am="doc" onclick="switchAdmin(this)"><span>📚</span>文档总览</div>
+        <div class="admin-menu" data-am="chat" onclick="switchAdmin(this)"><span>💬</span>对话记录</div>
+        <div class="admin-menu" data-am="fb" onclick="switchAdmin(this)"><span>📝</span>反馈记录</div>
+        <div class="atitle">平台运营</div>
+        <div class="admin-menu" data-am="user" onclick="switchAdmin(this)"><span>👥</span>用户与权限</div>
+        <div class="admin-menu" data-am="vector" onclick="switchAdmin(this)"><span>🧬</span>向量索引</div>
+        <div class="admin-menu" data-am="log" onclick="switchAdmin(this)"><span>🧾</span>审计日志</div>
+      </div>
+      <div class="admin-main">
+        <div class="kpi-grid">
+          <div class="card stat-card"><div class="lbl">接入部门</div><div class="num" style="color:var(--cyan)">12</div><div class="lbl">覆盖员工 3,842 人</div></div>
+          <div class="card stat-card"><div class="lbl">本周活跃用户</div><div class="num" style="color:var(--green)">1,034</div><div class="lbl">日活峰值 486</div></div>
+          <div class="card stat-card"><div class="lbl">本周对话次数</div><div class="num" style="color:var(--orange)">8,652</div><div class="lbl">平均 4.6 轮 / 会话</div></div>
+          <div class="card stat-card"><div class="lbl">系统可用性</div><div class="num" style="color:var(--purple)">99.97%</div><div class="lbl">本周无 P1 事故</div></div>
+        </div>
+        <div class="card" style="padding:18px 20px">
+          <div class="section-title" style="margin-bottom:16px"><span class="dot"></span>运营总览</div>
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
+            <div class="tabs">
+              <div class="tab-item active" onclick="switchKpi(this)">最近 7 天</div>
+              <div class="tab-item" onclick="switchKpi(this)">最近 30 天</div>
+              <div class="tab-item" onclick="switchKpi(this)">本季度</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:22px;flex-wrap:wrap;font-size:13px;color:var(--text-2)">
+            <div style="flex:1;min-width:200px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>对话量</span><b style="color:var(--cyan)">8,652</b></div>
+              <div class="progress-mini"><div class="bar"><i style="width:82%"></i></div></div>
+              <div style="display:flex;justify-content:space-between;margin:14px 0 8px"><span>文档访问</span><b style="color:var(--cyan)">12,406</b></div>
+              <div class="progress-mini"><div class="bar"><i style="width:64%"></i></div></div>
+              <div style="display:flex;justify-content:space-between;margin:14px 0 8px"><span>Agent 任务</span><b style="color:var(--cyan)">312</b></div>
+              <div class="progress-mini"><div class="bar"><i style="width:47%"></i></div></div>
+            </div>
+            <div style="flex:1;min-width:200px;border-left:1px solid var(--border);padding-left:22px">
+              <div style="font-weight:700;color:var(--text);margin-bottom:12px">本周热门知识域 Top 5</div>
+              <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+                <span>1. 差旅报销制度 <span style="color:var(--cyan)">1,208 次</span></span>
+                <span>2. 供应商准入流程 <span style="color:var(--cyan)">986 次</span></span>
+                <span>3. 绩效考核办法 <span style="color:var(--cyan)">852 次</span></span>
+                <span>4. 研发规范手册 <span style="color:var(--cyan)">731 次</span></span>
+                <span>5. 信息安全红线 <span style="color:var(--cyan)">654 次</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="panel-head"><h4 id="adminTableTitle">🏢 部门管理</h4><button class="btn btn-ghost btn-sm" onclick="toast('演示环境：新增部门','info')">＋ 新增</button></div>
+          <div style="overflow-x:auto"><table class="admin-table" id="adminTable"></table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 上传弹窗 ================= -->
+<div class="modal-mask" id="uploadModal">
+  <div class="modal">
+    <div class="modal-head"><h3>⬆ 上传文档</h3><button class="modal-x" onclick="closeModal('uploadModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="upload-zone" id="uploadZone" onclick="startUpload()">
+        <div class="big">📄</div>
+        <div style="font-weight:700;color:var(--text)">点击选择或拖拽文件到此处</div>
+        <div style="font-size:12px;color:var(--text-3);margin-top:6px">支持 PDF / Word / Excel / PPT / 扫描件，单文件 ≤ 200MB，最多 10 个</div>
+      </div>
+      <div class="upload-files" id="uploadFiles"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 文档详情弹窗 ================= -->
+<div class="modal-mask" id="docModal">
+  <div class="modal" style="width:680px">
+    <div class="modal-head"><h3 id="docModalTitle">文档详情</h3><button class="modal-x" onclick="closeModal('docModal')">✕</button></div>
+    <div class="modal-body">
+      <div style="display:flex;gap:14px;margin-bottom:18px">
+        <div class="doc-icon" id="docModalIcon" style="width:56px;height:56px;font-size:16px">PDF</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:15px" id="docModalName">-</div>
+          <div style="font-size:12px;color:var(--text-3);margin-top:6px" id="docModalMeta">-</div>
+        </div>
+        <div style="text-align:right;font-size:12px;color:var(--text-3)" id="docModalStatus"></div>
+      </div>
+      <div class="field-label">文档版本</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px" id="versionList"></div>
+      <div class="field-label">处理流程</div>
+      <div class="progress-steps" id="docFlowSteps"></div>
+      <div class="field-label">摘要抽取</div>
+      <div style="font-size:13px;color:var(--text-2);line-height:1.8;background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;padding:12px 14px" id="docModalSummary">-</div>
+      <div style="display:flex;gap:8px;margin-top:18px;justify-content:flex-end">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('docModal');toast('已跳转至溯源视图（演示）','success')">🧭 溯源</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('已发起导出，产物将写入输出目录','success')">⬇ 导出</button>
+        <button class="btn btn-primary btn-sm" onclick="closeModal('docModal');toast('已加入对话上下文','success')">💬 进入对话</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 溯源弹窗 ================= -->
+<div class="modal-mask" id="refModal">
+  <div class="modal" style="width:640px">
+    <div class="modal-head"><h3>🧭 回答溯源</h3><button class="modal-x" onclick="closeModal('refModal')">✕</button></div>
+    <div class="modal-body" style="background:var(--bg)">
+      <div style="font-size:13px;color:var(--text-3);margin-bottom:14px;line-height:1.6">以下为回答内容的引用来源，点击「查看原文」可定位到文档对应页与切片。</div>
+      <div class="ref-item">
+        <div class="idx">1</div>
+        <div style="flex:1">
+          <div class="rtitle">《Q3项目进展周报汇总.pdf》 · 第 3 页</div>
+          <div class="rdesc">「知寻平台 v1.2：文档解析服务完成 12 类格式适配，向量化吞吐提升至 2,400 页/小时；Agent 编排引擎 LangGraph 多智能体流程联调通过。」</div>
+          <div class="rmeta"><span class="tag tag-blue">切片#12</span><span>相似度 0.93</span><span>部门：研发中心</span><span>版本：v3.1</span></div>
+          <div class="goto" onclick="toast('已定位原文（演示）','success')">查看原文 →</div>
+        </div>
+      </div>
+      <div class="ref-item">
+        <div class="idx">2</div>
+        <div style="flex:1">
+          <div class="rtitle">《移动端知识库灰度报告.docx》 · 第 2 页</div>
+          <div class="rdesc">「iOS / Android 双端进入灰度，P0 缺陷清零；OCR 服务 GPU 资源紧张，已扩容 2 台推理节点。」</div>
+          <div class="rmeta"><span class="tag tag-purple">切片#7</span><span>相似度 0.89</span><span>部门：移动端组</span><span>版本：v1.0</span></div>
+          <div class="goto" onclick="toast('已定位原文（演示）','success')">查看原文 →</div>
+        </div>
+      </div>
+      <div class="ref-item">
+        <div class="idx">3</div>
+        <div style="flex:1">
+          <div class="rtitle">《供应商数据迁移方案.pdf》 · 第 5 页</div>
+          <div class="rdesc">「供应商数据迁移存在接口兼容风险，已完成联调方案评审，下周进入联调实施。」</div>
+          <div class="rmeta"><span class="tag tag-green">切片#9</span><span>相似度 0.86</span><span>部门：供应链</span><span>版本：v2.0</span></div>
+          <div class="goto" onclick="toast('已定位原文（演示）','success')">查看原文 →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 上传进度模拟弹窗 ================= -->
+<div class="modal-mask" id="progressModal">
+  <div class="modal" style="width:520px">
+    <div class="modal-head"><h3>📤 正在上传并处理</h3><button class="modal-x" onclick="toast('上传处理中，请勿关闭','error')">✕</button></div>
+    <div class="modal-body">
+      <div id="progressFileName" style="font-weight:700;font-size:14px;margin-bottom:6px">文件</div>
+      <div style="font-size:12px;color:var(--text-3);margin-bottom:16px">文件 → 解析 → OCR → 切片 → 向量化</div>
+      <div class="progress-steps" id="progressSteps"></div>
+      <div class="progress-bar"><i id="progressFill"></i></div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text-3)"><span id="progressPct">0%</span><span id="progressStatus">排队中…</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ============ 数据 ============ */
+  const DOCS = [
+    {name:'Q3项目进展周报汇总.pdf', type:'pdf', ver:'v3.1', size:'2.8 MB', owner:'王芳', dept:'研发中心', time:'2026-10-20 09:12', pages:'86 页', status:'已向量化', summary:'汇总研发中心 6 个项目的季度进展、风险与计划，覆盖知寻平台、Agent 引擎、移动端等项目，可用于周报素材与汇报支撑。'},
+    {name:'移动端知识库灰度报告.docx', type:'docx', ver:'v1.0', size:'1.2 MB', owner:'李强', dept:'移动端组', time:'2026-10-19 14:30', pages:'24 页', status:'已向量化', summary:'移动端 iOS/Android 双端灰度数据、缺陷分布与资源瓶颈分析，OCR 服务 GPU 扩容建议见第 2 节。'},
+    {name:'供应商数据迁移方案.pdf', type:'pdf', ver:'v2.0', size:'4.6 MB', owner:'赵敏', dept:'供应链', time:'2026-10-18 16:45', pages:'58 页', status:'已向量化', summary:'供应商主数据迁移总体方案，含接口兼容性评估、风险矩阵与实施排期，联调评审结论位于第 5 章。'},
+    {name:'2025年度差旅报销制度.xlsx', type:'xlsx', ver:'v4.2', size:'680 KB', owner:'孙悦', dept:'财务部', time:'2026-10-16 11:20', pages:'3 sheet', status:'已向量化', summary:'差旅标准、报销流程与审批权限矩阵，2025 年修订版已生效，支持按部门、城市、职级查询。'},
+    {name:'研发规范手册 v1.5.pptx', type:'pptx', ver:'v1.5', size:'9.1 MB', owner:'周杰', dept:'研发中心', time:'2026-10-15 10:05', pages:'32 页', status:'已向量化', summary:'研发全流程规范，包括代码评审、测试准入、发布门禁与安全红线，适合新员工培训与日常检索。'},
+    {name:'产品需求评审纪要_0923.txt', type:'txt', ver:'v1.1', size:'48 KB', owner:'吴迪', dept:'产品部', time:'2026-10-14 15:40', pages:'全文', status:'向量化中', summary:'9 月 23 日需求评审纪要，含知寻 v1.3 需求范围、优先级排序与待确认事项清单。'},
+    {name:'信息系统安全管理制度.pdf', type:'pdf', ver:'v5.0', size:'3.3 MB', owner:'郑阳', dept:'信息安全', time:'2026-10-12 09:00', pages:'41 页', status:'已向量化', summary:'企业信息安全管理制度 v5.0，覆盖账号权限、数据分级、审计合规与应急预案。'},
+    {name:'组织结构与通讯录_2026Q3.xlsx', type:'xlsx', ver:'v3.0', size:'320 KB', owner:'系统', dept:'HR', time:'2026-10-11 08:30', pages:'2 sheet', status:'已向量化', summary:'2026 年三季度组织结构、部门负责人与通讯录，数据由 HR 系统每日同步。'}
+  ];
+
+  const PENDING_TASKS = [
+    {id:'AG-20261022-014', type:'📊 周报生成', title:'研发中心 Q3 第 42 周周报', docs:'Q3项目进展周报汇总.pdf 等 3 份', desc:'已基于所选 3 份文档生成周报初稿，含进展 6 项、风险 3 项、下周计划 5 项，请确认后进入正式生成与归档。', time:'10:26'},
+    {id:'AG-20261022-012', type:'🆚 文档对比', title:'差旅报销制度 v4.1 → v4.2 差异清单', docs:'2025年度差旅报销制度.xlsx', desc:'检测到 14 处差异（新增 9 处 / 修订 4 处 / 删除 1 处），涉及住宿标准、餐补额度与审批权限。', time:'09:58'}
+  ];
+  const HISTORY_TASKS = [
+    {id:'AG-20261021-031', type:'✍️ 方案撰写', title:'企业知识库运营方案（初稿）', docs:'6 份', status:'已完成', pct:100, time:'昨天 17:20'},
+    {id:'AG-20261021-027', type:'🧩 知识抽取', title:'供应商合同关键条款抽取', docs:'18 份', status:'已完成', pct:100, time:'昨天 14:02'},
+    {id:'AG-20261020-018', type:'📊 月报生成', title:'研发中心 9 月研发月报', docs:'12 份', status:'已完成', pct:100, time:'10-20 16:45'},
+    {id:'AG-20261019-009', type:'🆚 文档对比', title:'信息安全管理制度 v4.0→v5.0 差异', docs:'2 份', status:'已取消', pct:0, time:'10-19 11:08'}
+  ];
+
+  const ADMIN_DATA = {
+    dept:[['ID','部门名称','负责人','成员数','文档数','对话次数','状态'],['D01','研发中心','王芳',642,318,'3,204','正常'],['D02','产品部','吴迪',86,95,'1,206','正常'],['D03','供应链','赵敏',124,210,'886','正常'],['D04','财务部','孙悦',58,72,'652','正常'],['D05','信息安全','郑阳',34,58,'318','正常'],['D06','人力资源','刘畅',92,45,'402','正常']],
+    doc:[['文档ID','名称','类型','部门','版本','大小','向量化','操作'],['DOC-1001','Q3项目进展周报汇总.pdf','PDF','研发中心','v3.1','2.8 MB','✓','详情'],['DOC-1002','移动端知识库灰度报告.docx','Word','移动端组','v1.0','1.2 MB','✓','详情'],['DOC-1003','供应商数据迁移方案.pdf','PDF','供应链','v2.0','4.6 MB','✓','详情'],['DOC-1004','2025年度差旅报销制度.xlsx','Excel','财务部','v4.2','680 KB','✓','详情'],['DOC-1005','研发规范手册 v1.5.pptx','PPT','研发中心','v1.5','9.1 MB','✓','详情'],['DOC-1006','产品需求评审纪要_0923.txt','文本','产品部','v1.1','48 KB','⏳','详情']],
+    chat:[['会话ID','用户','部门','主题','消息数','引用文档','时间','满意度'],['SES-20261022-0842','张伟','研发中心','Q3研发周报素材整理',18,3,'10:24','5.0'],['SES-20261022-0711','陈静','财务部','差旅报销标准查询',6,1,'09:12','4.8'],['SES-20261022-0638','林峰','供应链','供应商准入流程',12,2,'08:47','4.9'],['SES-20261021-0920','张伟','研发中心','Agent方案撰写任务',5,6,'昨天','5.0'],['SES-20261021-0815','李强','移动端组','灰度报告数据问答',9,2,'昨天','4.6']],
+    fb:[['反馈ID','用户','类型','内容','时间','处理'],['FB-2101','张伟','内容纠错','引用切片页码偏移 1 页','10-22 10:31','待处理'],['FB-2098','陈静','体验建议','希望增加多轮追问示例','10-22 09:02','已处理'],['FB-2095','林峰','答案错误','供应商准入条件回答不完整','10-21 16:40','已处理'],['FB-2091','李强','Bug','移动端引用弹窗样式错位','10-21 11:22','待处理']],
+    user:[['用户ID','姓名','部门','角色','最近登录','状态','权限'],['U-0281','张伟','研发中心','员工','今天 10:24','在线','标准'],['U-0012','王芳','研发中心','部门管理员','今天 09:01','在线','部门管理员'],['U-0001','admin','系统','平台管理员','今天 08:30','在线','平台管理员'],['U-0356','陈静','财务部','员工','昨天 17:45','离线','标准'],['U-0224','刘畅','人力资源','部门管理员','昨天 16:10','离线','部门管理员']],
+    vector:[['索引名','文档数','切片数','维度','覆盖率','状态','重建'],['dept_rd_dev','318','12,046','1536','98.2%','正常','-'],['dept_fin','72','2,384','1536','97.1%','正常','-'],['dept_scm','210','7,862','1536','96.4%','正常','-'],['global_policy','58','2,102','1536','99.1%','正常','-'],['corp_archive','86','3,456','1536','93.8%','重建中','进行中']],
+    log:[['日志ID','用户','动作','目标','IP','时间','结果'],['LOG-55201','admin','登录','后台','10.20.8.16','10-22 08:30','成功'],['LOG-55200','张伟','上传文档','Q3项目进展周报汇总.pdf','10.20.3.22','10-22 10:26','成功'],['LOG-55199','张伟','导出文档','周报素材.md','10.20.3.22','10-22 10:27','成功'],['LOG-55198','林峰','搜索','供应商准入','10.20.7.11','10-22 09:30','成功'],['LOG-55197','未知','越权尝试','管理员接口','10.2.4.9','10-22 08:12','拦截']]
+  };
+
+  /* ============ 登录 ============ */
+  function doLogin(){
+    const u = document.getElementById('loginUser').value.trim();
+    const isAdmin = u.toLowerCase() === 'admin';
+    document.getElementById('navUserName').textContent = isAdmin ? '平台管理员' : '张伟';
+    document.getElementById('navUserRole').textContent = isAdmin ? '平台管理员 · admin' : '知识库用户 · 研发中心';
+    document.getElementById('navAvatar').textContent = (isAdmin ? '管' : '张');
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('appMain').classList.add('show');
+    goPage('doc');
+    toast('欢迎使用知寻 KnowSeek，让企业知识触手可及','success');
+  }
+  function logout(){ location.reload(); }
+
+  /* ============ 路由 ============ */
+  function goPage(page){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-'+page).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.page===page));
+  }
+
+  /* ============ 文档库 ============ */
+  function renderDocs(list){
+    const grid = document.getElementById('docGrid');
+    grid.innerHTML = list.map((d,i)=>{
+      const cls = {pdf:'fi-pdf',docx:'fi-docx',xlsx:'fi-xlsx',pptx:'fi-pptx',txt:'fi-txt'}[d.type];
+      const st = d.status==='已向量化' ? '<span class="tag tag-green">✓ 已向量化</span>' : '<span class="tag tag-orange">⏳ 向量化中</span>';
+      return `<div class="card doc-card" onclick="openDoc(${i})">
+        <div class="dhead">
+          <div class="doc-icon ${cls}">${d.type.toUpperCase()}</div>
+          <div style="flex:1">
+            <div class="dname">${d.name}</div>
+            <div class="dmeta">${d.size} · ${d.pages} · ${d.time}</div>
+          </div>
+          ${st}
+        </div>
+        <div class="dbody">
+          <span class="tag tag-gray">${d.dept}</span><span class="tag tag-blue">${d.ver}</span><span class="tag tag-gray">${d.owner}</span>
+        </div>
+        <div class="dfoot">
+          <span>上传：${d.owner}</span>
+          <div class="dops">
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openDoc(${i})">详情</button>
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();toast('已加入对话上下文（演示）','success')">对话</button>
+            <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();removeDoc(${i})">删除</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  function filterDocs(v){
+    const t = document.querySelector('#typeFilter .chip.active').dataset.t;
+    const list = DOCS.filter(d=>{
+      const okT = t==='all' || d.type===t;
+      const okS = !v || (d.name+d.dept+d.summary).toLowerCase().includes(v.toLowerCase());
+      return okT && okS;
+    });
+    renderDocs(list);
+  }
+  function filterType(el){
+    document.querySelectorAll('#typeFilter .chip').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+    filterDocs(document.querySelector('.search-box .input').value);
+  }
+  function removeDoc(i){
+    // 演示删除：从渲染列表移除
+    DOCS.splice(i,1);
+    filterDocs('');
+    toast('文档已移入回收站（演示）','success');
+  }
+  function openDoc(i){
+    const d = DOCS[i];
+    document.getElementById('docModalTitle').textContent = '文档详情';
+    document.getElementById('docModalName').textContent = d.name;
+    document.getElementById('docModalMeta').textContent = `${d.size} · ${d.pages} · ${d.dept} · 上传者 ${d.owner} · ${d.time}`;
+    document.getElementById('docModalStatus').innerHTML = d.status==='已向量化' ? '<span class="tag tag-green">✓ 已向量化</span>' : '<span class="tag tag-orange">⏳ 向量化中</span>';
+    document.getElementById('docModalSummary').textContent = d.summary;
+    const icon = document.getElementById('docModalIcon');
+    icon.className = 'doc-icon '+({pdf:'fi-pdf',docx:'fi-docx',xlsx:'fi-xlsx',pptx:'fi-pptx',txt:'fi-txt'}[d.type]);
+    icon.textContent = d.type.toUpperCase();
+    // 版本列表
+    document.getElementById('versionList').innerHTML = [d.ver, 'v'+(parseFloat(d.ver.slice(1))-0.1).toFixed(1)].map((v,vi)=>
+      `<div class="doc-pick ${vi===0?'checked':''}" onclick="this.parentNode.querySelectorAll('.doc-pick').forEach(x=>x.classList.remove('checked'));this.classList.add('checked');toast('已切换至版本 '+this.querySelector('span:last-child').textContent.split(' · ')[0],'success')">
+        <span class="ck">${vi===0?'✓':''}</span><span style="flex:1;font-size:13px;color:var(--text)">${v}${vi===0?'（当前）':''} · ${vi===0?'2026-10-20':'2026-09-30'}</span><span style="font-size:12px;color:var(--text-3)">${vi===0?'2.8 MB':'2.6 MB'}</span>
+      </div>`).join('');
+    // 流程
+    const steps = ['解析','OCR','切片','向量化'];
+    const done = d.status==='已向量化' ? 4 : 3;
+    document.getElementById('docFlowSteps').innerHTML = steps.map((s,si)=>
+      `<div class="pstep ${si<done?'done':''} ${si===done?'active':''}"><div class="pline"><i></i></div><div class="plbl">${s}</div></div>`).join('');
+    openModal('docModal');
+  }
+
+  /* ============ 上传 ============ */
+  let uploadTimer = null;
+  function startUpload(){
+    const zone = document.getElementById('uploadZone');
+    const files = document.getElementById('uploadFiles');
+    files.innerHTML = '';
+    const steps = ['解析','OCR','切片','向量化'];
+    document.getElementById('progressFileName').textContent = '《企业内部管理制度汇编.pdf》（演示文件）';
+    document.getElementById('progressSteps').innerHTML = steps.map((s,si)=>`<div class="pstep" id="ps${si}"><div class="pline"><i></i></div><div class="plbl">${s}</div></div>`).join('');
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('progressPct').textContent = '0%';
+    document.getElementById('progressStatus').textContent = '等待处理…';
+    openModal('progressModal');
+    zone.style.display = 'none';
+    files.innerHTML = `<div class="ufile"><div class="doc-icon fi-pdf" style="width:34px;height:34px;font-size:11px">PDF</div><div class="nm">企业内部管理制度汇编.pdf</div><div class="st">2.4 MB</div></div>`;
+    const pcts = [0,30,55,78,100];
+    const labels = ['正在解析文件结构…','OCR 识别扫描页…','文本切片与清洗…','向量化并写入索引…','处理完成'];
+    let step = 0;
+    uploadTimer = setInterval(()=>{
+      if(step >= 4){ clearInterval(uploadTimer); toast('上传完成，文档已进入知识库（演示）','success'); setTimeout(()=>closeModal('progressModal'),600); return; }
+      const p0 = pcts[step], p1 = pcts[step+1];
+      document.getElementById('ps'+step).classList.add('done');
+      if(step<4) document.getElementById('ps'+(step+1)).classList.add('active');
+      document.getElementById('progressStatus').textContent = labels[step];
+      let cur = p0;
+      const tick = setInterval(()=>{
+        cur += 2; if(cur>=p1){ clearInterval(tick); step++; return; }
+        document.getElementById('progressFill').style.width = cur+'%';
+        document.getElementById('progressPct').textContent = cur+'%';
+      },120);
+    },900);
+  }
+
+  /* ============ 对话 ============ */
+  function newSession(){
+    const side = document.querySelector('.chat-side');
+    document.querySelectorAll('.session-item').forEach(s=>s.classList.remove('active'));
+    const el = document.createElement('div');
+    el.className = 'session-item active';
+    el.innerHTML = '<span class="sname">💬 新会话</span><span class="stime">刚刚</span>';
+    el.onclick = ()=>selSession(el);
+    side.insertBefore(el, side.querySelector('.btn-new').nextSibling);
+    const body = document.getElementById('chatBody');
+    body.innerHTML = `<div class="msg assistant"><div class="mav">K</div><div class="mb">你好，我是<span style="color:var(--cyan);font-weight:600">知寻 KnowSeek</span>。新会话已创建，请提出你的问题。<div class="mtime">${nowTime()}</div></div></div>`;
+    document.querySelector('.chat-head .ctitle').textContent = '💬 新会话';
+  }
+  function selSession(el){
+    document.querySelectorAll('.session-item').forEach(s=>s.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelector('.chat-head .ctitle').textContent = el.querySelector('.sname').textContent;
+  }
+  function nowTime(){ const d=new Date(); return d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0'); }
+  function sendMsg(){
+    const ta = document.getElementById('chatInput');
+    const v = ta.value.trim();
+    if(!v){ toast('请输入问题','info'); return; }
+    const body = document.getElementById('chatBody');
+    body.insertAdjacentHTML('beforeend',
+      `<div class="msg user"><div class="mav">张</div><div class="mb">${v.replace(/</g,'&lt;')}<div class="mtime">${nowTime()}</div></div></div>`);
+    ta.value='';
+    setTimeout(()=>{
+      body.insertAdjacentHTML('beforeend',
+        `<div class="msg assistant"><div class="mav">K</div><div class="mb">已基于知识库检索 <b>3 份相关文档</b>。根据《Q3项目进展周报汇总.pdf》第 3 页<span class="ref-chip" onclick="openModal('refModal')">[1]</span>，知寻平台 v1.2 解析服务完成 12 类格式适配；移动端灰度报告显示 P0 缺陷已清零<span class="ref-chip" onclick="openModal('refModal')">[2]</span>。如需正式周报，我可调用 Agent 模板生成。<div class="mtime">${nowTime()} · 已引用 2 个来源</div></div></div>`);
+      body.scrollTop = body.scrollHeight;
+    }, 800);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  /* ============ Agent 任务 ============ */
+  function renderAgentDocs(){
+    const el = document.getElementById('agentDocList');
+    el.innerHTML = DOCS.slice(0,5).map((d,i)=>
+      `<div class="doc-pick ${i<3?'checked':''}" onclick="this.classList.toggle('checked')">
+        <span class="ck">✓</span><span style="flex:1;font-size:13px;color:var(--text)">${d.name}</span><span style="font-size:12px;color:var(--text-3)">${d.dept}</span>
+      </div>`).join('');
+  }
+  function selTaskType(el){
+    document.querySelectorAll('.task-type').forEach(t=>t.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function toggleSwitch(el){ el.classList.toggle('on'); toast(el.classList.contains('on')?'已开启人工确认':'已关闭人工确认','info'); }
+  function renderPending(){
+    const el = document.getElementById('pendingList');
+    document.getElementById('pendingCount').textContent = PENDING_TASKS.length;
+    el.innerHTML = PENDING_TASKS.map((t,i)=>`
+      <div class="task-item">
+        <div class="thead"><span class="tag tag-orange">${t.type}</span><span class="ttitle">${t.title}</span><span style="font-size:12px;color:var(--text-3)">${t.id}</span></div>
+        <div class="tmeta"><span>📄 ${t.docs}</span><span>🕐 ${t.time}</span></div>
+        <div class="tdesc">${t.desc}</div>
+        <div class="tops">
+          <button class="btn btn-success btn-sm" onclick="confirmTask(${i})">✓ 确认执行</button>
+          <button class="btn btn-danger btn-sm" onclick="rejectTask(${i})">✕ 拒绝</button>
+          <button class="btn btn-ghost btn-sm" onclick="openModal('refModal')">预览草稿</button>
+        </div>
+      </div>`).join('');
+  }
+  function confirmTask(i){
+    const t = PENDING_TASKS.splice(i,1)[0];
+    renderPending();
+    document.getElementById('historyList').insertAdjacentHTML('afterbegin',
+      `<div class="task-item"><div class="thead"><span class="tag tag-green">${t.type}</span><span class="ttitle">${t.title}</span><span style="font-size:12px;color:var(--text-3)">${t.id}</span></div><div class="tmeta"><span>📄 ${t.docs}</span><span style="color:var(--green)">✓ 已确认执行</span></div><div class="progress-mini"><div class="bar"><i style="width:20%"></i></div><span>执行中 20%</span></div></div>`);
+    toast('已确认，Agent 开始执行（演示）','success');
+  }
+  function rejectTask(i){
+    const t = PENDING_TASKS.splice(i,1)[0];
+    renderPending();
+    toast('已拒绝任务 '+t.id+'（演示）','info');
+  }
+  function renderHistory(){
+    document.getElementById('historyList').innerHTML = HISTORY_TASKS.map(t=>`
+      <div class="task-item">
+        <div class="thead"><span class="tag tag-gray">${t.type}</span><span class="ttitle">${t.title}</span><span style="font-size:12px;color:var(--text-3)">${t.id}</span><span class="tag ${t.status==='已完成'?'tag-green':'tag-red'}">${t.status}</span></div>
+        <div class="tmeta"><span>📄 ${t.docs}</span><span>🕐 ${t.time}</span></div>
+        <div class="progress-mini"><div class="bar"><i style="width:${t.pct}%"></i></div><span>${t.status==='已完成'?'完成':'已取消'}</span></div>
+      </div>`).join('');
+  }
+  function submitAgent(){
+    const desc = document.getElementById('agentDesc').value.trim();
+    const selDocs = document.querySelectorAll('#agentDocList .doc-pick.checked').length;
+    if(!selDocs){ toast('请至少选择 1 份文档','error'); return; }
+    const switchOn = document.getElementById('confirmSwitch').classList.contains('on');
+    if(switchOn){
+      PENDING_TASKS.unshift({id:'AG-'+nowTime().replace(/:/g,'')+'-'+Math.floor(Math.random()*100), type:'📊 任务生成', title:'新 Agent 任务（待确认）', docs:selDocs+' 份文档', desc:desc||'任务描述为空', time:'刚刚'});
+      renderPending();
+      toast('任务草稿已生成，等待您人工确认（演示）','success');
+    } else {
+      toast('任务已提交，Agent 正在执行（演示）','success');
+    }
+  }
+
+  /* ============ 管理员后台 ============ */
+  function switchAdmin(el){
+    document.querySelectorAll('.admin-menu').forEach(m=>m.classList.remove('active'));
+    el.classList.add('active');
+    renderAdminTable(el.dataset.am);
+  }
+  function switchKpi(el){
+    document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    toast('已切换统计周期：'+el.textContent,'info');
+  }
+  function renderAdminTable(key){
+    const data = ADMIN_DATA[key] || [];
+    const titles = {dept:'🏢 部门管理',doc:'📚 文档总览',chat:'💬 对话记录',fb:'📝 反馈记录',user:'👥 用户与权限',vector:'🧬 向量索引',log:'🧾 审计日志'};
+    document.getElementById('adminTableTitle').textContent = titles[key]||'';
+    document.getElementById('adminTable').innerHTML =
+      `<thead><tr>${data[0].map(h=>`<th>${h}</th>`).join('')}</tr></thead>` +
+      `<tbody>${data.slice(1).map(r=>`<tr>${r.map((c,ci)=>ci===0?`<td class="col-title">${c}</td>`:`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  }
+
+  /* ============ 弹窗 & Toast ============ */
+  function openModal(id){ document.getElementById(id).style.display='flex'; }
+  function closeModal(id){ document.getElementById(id).style.display='none'; }
+  document.querySelectorAll('.modal-mask').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.style.display='none'; }));
+
+  let toastTimer=null;
+  function toast(msg,type){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show'+(type==='success'?' success':type==='error'?' error':'');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>t.classList.remove('show'),2600);
+  }
+
+  /* ============ 初始化 ============ */
+  renderDocs(DOCS);
+  renderAgentDocs();
+  renderPending();
+  renderHistory();
+  renderAdminTable('dept');
+  document.getElementById('chatInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMsg(); }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+# 知寻 KnowSeek 生产编排（Docker Compose）
+version: "3.9"
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: knowseek-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-knowseek}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?请设置 POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-knowseek}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-knowseek}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./server
+    container_name: knowseek-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./server/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-knowseek}:${POSTGRES_PASSWORD:?}@db:5432/${POSTGRES_DB:-knowseek}
+      CHROMA_DIR: /data/chroma_data
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - knowseek-data:/data
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./web
+    container_name: knowseek-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  pgdata:
+  knowseek-data:
