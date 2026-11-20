@@ -33,8 +33,9 @@ services:
       UPLOAD_DIR: /data/uploads
     volumes:
       - knowseek-data:/data
+    # 后端不直接对公网暴露，统一走前端 Nginx 的 /api 反向代理；仅本机可用于调试
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
 
   frontend:
     build: ./web
