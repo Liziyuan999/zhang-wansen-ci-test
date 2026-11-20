@@ -21,6 +21,9 @@ langchain-core>=1.0
 # PDF 水印（watermark_service，WATERMARK_ENABLED=True 时使用；缺失则降级为仅文件名标记）
 reportlab>=4.0
 
+# 生产数据库驱动：docker-compose 使用 PostgreSQL 时必需（SQLAlchemy 默认 driver）
+psycopg2-binary>=2.9
+
 # 可选：图片 OCR（体积大，按需安装）
 # paddleocr>=2.7
 # paddlepaddle>=2.5
