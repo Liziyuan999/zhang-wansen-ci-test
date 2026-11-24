@@ -452,7 +452,7 @@ function switchTab(tab: string) {
         <ul class="brand-features">
           <li class="feature-item">
             <span class="feature-icon"><el-icon><Message /></el-icon></span>
-            <span>QQ 邮箱验证码注册 / 登录</span>
+            <span>QQ 邮箱验证码 / 密码 双模式登录</span>
           </li>
           <li class="feature-item">
             <span class="feature-icon"><el-icon><Document /></el-icon></span>
