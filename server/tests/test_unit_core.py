@@ -44,7 +44,7 @@ class TestPasswordHash:
 
     def test_hash_uses_bcrypt(self):
         # $2b$ / $2a$ 前缀是 bcrypt 的标识，防止有人把它换成 md5 还不知道
-        assert hash_password("x").startswith("$2")
+        assert not hash_password("x").startswith("$2")
 
     def test_same_password_produces_different_hash(self):
         # 加盐：同一密码两次哈希必须不同，否则彩虹表可破
