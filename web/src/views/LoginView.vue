@@ -477,7 +477,7 @@ function switchTab(tab: string) {
       <div class="panel-glow"></div>
       <div class="panel-inner">
         <div class="panel-head">
-          <div class="panel-title">欢迎回来</div>
+          <div class="panel-title">【第一幕】欢迎回来</div>
           <div class="panel-sub">登录或注册以继续使用 KnowSeek</div>
         </div>
 
