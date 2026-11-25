@@ -24,6 +24,11 @@ reportlab>=4.0
 # 生产数据库驱动：docker-compose 使用 PostgreSQL 时必需（SQLAlchemy 默认 driver）
 psycopg2-binary>=2.9
 
+# 测试门禁（Dockerfile 的 tester 阶段在构建时执行 pytest，缺此依赖会导致构建失败）
+# 仅用于测试，运行时不被业务代码引用
+pytest>=8.0,<9.0
+coverage>=7.0
+
 # 可选：图片 OCR（体积大，按需安装）
 # paddleocr>=2.7
 # paddlepaddle>=2.5

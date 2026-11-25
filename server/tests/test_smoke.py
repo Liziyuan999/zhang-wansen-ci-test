@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""冒烟测试：验证应用可导入、15 张表、注册/登录/文档/RAG/Agent 基础流程。"""
+"""冒烟测试（脚本式，手动运行）：验证应用可导入、核心表齐全、注册/登录/文档/RAG/Agent 基础流程。"""
 import io
 import sys
 import tempfile
@@ -43,7 +43,14 @@ def main() -> None:
         "agent_task", "operation_log", "llm_call_log", "sys_config",
     }
     tables = set(Base.metadata.tables.keys())
-    check("15张ORM表已注册", tables == expected, f"got={sorted(tables)}")
+    # 注意：这里只校验"核心表必须齐全 + 表数不少于基线 15 张"，不写死等号。
+    # 写死等号会导致每次新增表都让冒烟测试变红（历史事故：实际 34 张表时断言全红）。
+    missing = expected - tables
+    check(
+        "核心ORM表已注册（不少于15张）",
+        not missing and len(tables) >= 15,
+        f"missing={sorted(missing)} 实际={len(tables)}张",
+    )
 
     # 2. 健康检查
     r = client.get("/api/health")

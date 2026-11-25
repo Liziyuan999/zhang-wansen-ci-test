@@ -1,0 +1,44 @@
+# ============================================================
+# 构建上下文瘦身：这些内容与运行时无关，打进镜像只会让构建变慢、镜像变大
+# ============================================================
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# 本地运行期数据（运行时由 compose 的 named volume 提供，绝不进镜像）
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+chroma_data/
+uploads/
+logs/
+*.log
+
+# 密钥与本地配置（compose 通过 env_file 在运行时注入，镜像内不存 .env）
+.env
+.env.*
+!.env.example
+
+# IDE 与版本控制
+.git/
+.gitignore
+.idea/
+.vscode/
+
+# ============================================================
+# 警告：以下目录绝对不能被排除，否则 Dockerfile 的 tester 阶段
+# 会收集到 0 个用例，pytest 退出码为 5，导致每次构建都失败。
+#   tests/   —— 单元测试本体（门禁执行对象）
+#   app/     —— 被测代码
+#   migrations/, alembic.ini —— 数据库迁移
+# ============================================================

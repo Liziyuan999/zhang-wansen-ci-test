@@ -59,3 +59,7 @@ server/.env
 web/.env.production
 
 docker-compose.override.yml
+# ===== SQLite runtime leftovers (gate test artifacts) =====
+*.db-shm
+*.db-wal
+server/gate_check*
